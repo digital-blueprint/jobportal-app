@@ -2,7 +2,7 @@
     "name": "@digital-blueprint/jobportal-app",
     "internalName": "dbp-jobportal",
     "type": "module",
-    "version": "1.3.0",
+    "version": "0.1.0",
     "main": "src/dbp-jobportal.js",
     "license": "LGPL-2.1-or-later",
     "private": false,
