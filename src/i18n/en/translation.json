@@ -1,1 +1,21 @@
-{}
+{
+    "view-job-offers": {
+        "areas-of-interest": "Areas of Interest",
+        "available-positions": "Available Positions",
+        "deadline": "Application deadline",
+        "job-type": "Job Type",
+        "no-results": "No job offers found.",
+        "open-job": "Open position",
+        "page-size": "Items per page",
+        "pagination-first": "First",
+        "pagination-last": "Last",
+        "pagination-next": "Next",
+        "pagination-prev": "Prev",
+        "search-placeholder": "Search",
+        "select-placeholder": "--Please select--",
+        "sort-by": "Sort by:",
+        "sort-date-asc": "Date ↑",
+        "sort-date-desc": "Date ↓",
+        "view-details": "View"
+    }
+}
