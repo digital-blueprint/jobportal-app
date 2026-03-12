@@ -915,7 +915,7 @@ class ViewJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
 
             .job-title {
                 margin: 0 0 0.6rem 0;
-                font-size: 1rem;
+                font-size: 1.15rem;
                 font-weight: 600;
                 line-height: 1.35;
             }
@@ -926,14 +926,14 @@ class ViewJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
                 border: 1px solid var(--dbp-content);
                 border-radius: 2px;
                 padding: 0.1rem 0.4rem;
-                font-size: 0.8rem;
+                font-size: 1rem;
                 color: var(--dbp-content);
                 margin-bottom: 0.5rem;
             }
 
             .job-deadline {
                 margin: 0 0 0.75rem 0;
-                font-size: 0.875rem;
+                font-size: 1rem;
             }
 
             .job-card-footer {
@@ -979,7 +979,7 @@ class ViewJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
             .page-size-wrapper .label {
                 margin-bottom: 0;
                 white-space: nowrap;
-                font-size: 0.875rem;
+                font-size: 1rem;
             }
 
             .page-size-wrapper .control select {

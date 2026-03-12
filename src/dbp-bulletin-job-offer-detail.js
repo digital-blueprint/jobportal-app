@@ -321,7 +321,7 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
                 display: flex;
                 gap: 0.35rem;
                 margin-bottom: 0.2rem;
-                font-size: 0.95rem;
+                font-size: 1rem;
             }
 
             .meta-item dt {
@@ -348,7 +348,7 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
                 border: 1px solid var(--dbp-content);
                 border-radius: 2px;
                 padding: 0.1rem 0.4rem;
-                font-size: 0.8rem;
+                font-size: 1rem;
                 color: var(--dbp-content);
             }
 
