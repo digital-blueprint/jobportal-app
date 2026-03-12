@@ -1,11 +1,27 @@
 {
+    "job-offer-detail": {
+        "application-title": "Bewerbung",
+        "apply": "Bewerben",
+        "apply-success": "Ihre Bewerbung wurde erfolgreich übermittelt.",
+        "deadline": "Bewerbungsfrist",
+        "email": "E-Mail Adresse",
+        "first-name": "Vorname",
+        "last-name": "Nachname",
+        "message": "Freitextfeld",
+        "organization": "Organisation",
+        "published-at": "Veröffentlicht am",
+        "requirements": "Anforderungen",
+        "share": "Stelle teilen",
+        "start-date": "Dienstbeginn",
+        "submit": "Bewerbung abschicken",
+        "weekly-hours": "Anstellungsausmaß"
+    },
     "view-job-offers": {
         "areas-of-interest": "Interessensgebiete",
         "available-positions": "Verfügbare Stellen",
         "deadline": "Bewerbungsfrist",
         "job-type": "Stellenart",
         "no-results": "Keine Stellenangebote gefunden.",
-        "open-job": "Stelle öffnen",
         "page-size": "Einträge pro Seite",
         "pagination-first": "Erste",
         "pagination-last": "Letzte",

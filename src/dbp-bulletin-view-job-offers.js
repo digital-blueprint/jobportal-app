@@ -3,184 +3,366 @@ import {repeat} from 'lit/directives/repeat.js';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/src/styles.js';
 import DBPBulletinLitElement from './dbp-bulletin-lit-element.js';
+import './dbp-bulletin-job-offer-detail.js';
 
-/** @type {Array<{id: number, title: string, jobType: string, areaOfInterest: string, deadline: string, description: string}>} */
+/** @type {Array<{identifier: number, title: string, jobType: string, areaOfInterest: string, publishedAt: string, deadline: string, startDate: string, weeklyHours: string, organization: string, description: string, requirements: string[]}>} */
 const MOCK_JOB_OFFERS = [
     {
-        id: 1,
+        identifier: 1,
         title: 'Universitätsassistent*in im Bereich Elektrotechnik (m/w/d)',
         jobType: 'Universitätsstelle',
         areaOfInterest: 'Elektronik',
+        publishedAt: '2026-01-15',
         deadline: '2030-01-01',
+        startDate: 'ab sofort',
+        weeklyHours: '40 h / Woche',
+        organization: 'Institut für Elektrotechnik',
         description: 'Mitarbeit in Forschung und Lehre im Bereich Elektrotechnik.',
+        requirements: [
+            'Studium der Elektrotechnik oder eines verwandten Fachbereichs',
+            'Grundkenntnisse in analoger und digitaler Schaltungstechnik',
+        ],
     },
     {
-        id: 2,
+        identifier: 2,
         title: 'Werkstudent*in (m/w/d) als Projektunterstützung 6h pro Woche',
         jobType: 'Werkstudentenstelle',
         areaOfInterest: 'Architektur & Bauwesen',
+        publishedAt: '2026-02-01',
         deadline: '2030-01-01',
+        startDate: 'ab sofort',
+        weeklyHours: '6 h / Woche',
+        organization: 'Institut für Bautechnik',
         description: 'Unterstützung laufender Projekte im Bereich Bauwesen.',
+        requirements: [
+            'Studium der Architektur, des Bauingenieurwesens oder ähnlichem',
+            'Teamfähigkeit und Eigeninitiative',
+        ],
     },
     {
-        id: 3,
+        identifier: 3,
         title: 'Assistant Marketing Research (m/w/d) 20h',
         jobType: 'Teilzeitstelle',
         areaOfInterest: 'Kommunikation & Marketing',
+        publishedAt: '2026-02-10',
         deadline: '2030-01-01',
+        startDate: 'ab sofort',
+        weeklyHours: '20 h / Woche',
+        organization: 'Marketing Abteilung',
         description: 'Durchführung von Marktforschungsanalysen und Aufbereitung von Daten.',
+        requirements: [
+            'Studium der Wirtschaftswissenschaften, Marketing oder ähnlichem',
+            'Erfahrung mit Datenanalyse-Tools',
+        ],
     },
     {
-        id: 4,
+        identifier: 4,
         title: 'Studentische Mitarbeiter*in: Planung Hochbau',
         jobType: 'Werkstudentenstelle',
         areaOfInterest: 'Architektur & Bauwesen',
+        publishedAt: '2026-02-15',
         deadline: '2030-01-01',
+        startDate: 'ab sofort',
+        weeklyHours: '10 h / Woche',
+        organization: 'Institut für Hochbau',
         description: 'Unterstützung bei Planungsaufgaben im Hochbau.',
+        requirements: [
+            'Studium der Architektur oder des Bauingenieurwesens',
+            'CAD-Kenntnisse von Vorteil',
+        ],
     },
     {
-        id: 5,
+        identifier: 5,
         title: 'Student Support "Informationstechnologie" (m/w/d)',
         jobType: 'Werkstudentenstelle',
         areaOfInterest: 'Informatik',
+        publishedAt: '2026-03-15',
         deadline: '2026-06-30',
-        description: 'IT-Support für Studierende und Lehrende.',
+        startDate: 'ab sofort',
+        weeklyHours: '15 h / Woche',
+        organization: 'Institut für Informatik',
+        description:
+            'Du suchst einen flexiblen Studentenjob, der nicht nur Deine Fähigkeiten stärkt, sondern Dich auch persönlich weiterbringt? Wir bieten Dir ein inspirierendes Arbeitsumfeld, das Offenheit, Vielfalt und Teamgeist lebt. Von Anfang an wirst Du aktiv in spannende Projekte eingebunden, sammelst wertvolle Praxiserfahrungen und trägst mit Deinem Engagement zur Umsetzung nachhaltiger Initiativen bei.',
+        requirements: [
+            'Du befindest dich gerade in einem relevanten Studienfach wie Wirtschaftsinformatik, Betriebswirtschaftslehre, Informatik oder einem ähnlichen Bereich',
+            'Du hast Interesse am Bereich IT und insbes. an IT-Governance im Bankwesen. Du siehst dich als Zahlenjongleur, bringst eine analytische Denkweise mit und verstehst komplexe Zusammenhänge',
+            'Du hast Engagement, gute Kommunikationsfähigkeiten und genießt Teamarbeit in einem agilen Setup',
+            'Du bist sicher im Umgang mit MS Office, insbesondere Excel und PowerPoint. Erfahrung mit Jira oder Confluence',
+        ],
     },
     {
-        id: 6,
+        identifier: 6,
         title: 'Praktikant*in / Werkstudent*in im Bereich Reporting',
         jobType: 'Praktikum',
         areaOfInterest: 'Fahrzeugsicherheit',
+        publishedAt: '2026-02-20',
         deadline: '2030-01-01',
+        startDate: 'ab sofort',
+        weeklyHours: '20 h / Woche',
+        organization: 'Fahrzeugsicherheit Institut',
         description: 'Erstellung von Reports und Analysen im Bereich Fahrzeugsicherheit.',
+        requirements: [
+            'Studium der Fahrzeugtechnik oder ähnlichem',
+            'Kenntnisse in Reporting-Tools und Datenvisualisierung',
+        ],
     },
     {
-        id: 7,
+        identifier: 7,
         title: 'Werkstudent*in R&D - Technical Design Tool (m/w/d)',
         jobType: 'Werkstudentenstelle',
         areaOfInterest: 'Architektur & Bauwesen',
+        publishedAt: '2026-03-01',
         deadline: '2030-01-01',
+        startDate: 'ab sofort',
+        weeklyHours: '12 h / Woche',
+        organization: 'R&D Abteilung',
         description: 'Mitarbeit bei der Entwicklung technischer Design-Tools.',
+        requirements: [
+            'Studium der Informatik, Architektur oder ähnlichem',
+            'Kenntnisse in CAD oder 3D-Modellierung von Vorteil',
+        ],
     },
     {
-        id: 8,
+        identifier: 8,
         title: 'Marketing Mitarbeiter*in Schwerpunkt Digital Marketing & Social Media',
         jobType: 'Vollzeitstelle',
         areaOfInterest: 'Kommunikation & Marketing',
+        publishedAt: '2026-03-05',
         deadline: '2030-01-01',
+        startDate: 'ab sofort',
+        weeklyHours: '38 h / Woche',
+        organization: 'Kommunikationsabteilung',
         description: 'Betreuung und Weiterentwicklung der Social-Media-Kanäle.',
+        requirements: [
+            'Abgeschlossenes Studium im Bereich Marketing, Kommunikation oder ähnlichem',
+            'Mehrjährige Erfahrung im Social-Media-Management',
+        ],
     },
     {
-        id: 9,
+        identifier: 9,
         title: 'Werkstudent:in im Bereich Produktdigitalisierung (teilzeit)',
         jobType: 'Werkstudentenstelle',
         areaOfInterest: 'Wärmetechnik',
+        publishedAt: '2026-03-08',
         deadline: '2030-01-01',
+        startDate: 'ab sofort',
+        weeklyHours: '16 h / Woche',
+        organization: 'Institut für Wärmetechnik',
         description: 'Unterstützung bei der Digitalisierung von Produktionsprozessen.',
+        requirements: [
+            'Studium der Wärmetechnik, Maschinenbau oder ähnlichem',
+            'Grundkenntnisse in Digitalisierungstools und Datenbankmanagement',
+        ],
     },
     {
-        id: 10,
+        identifier: 10,
         title: 'Universitätsassistent*in im Bereich Elektrotechnik (m/w/d)',
         jobType: 'Universitätsstelle',
         areaOfInterest: 'Elektronik',
+        publishedAt: '2026-01-20',
         deadline: '2030-01-01',
+        startDate: 'ab sofort',
+        weeklyHours: '40 h / Woche',
+        organization: 'Institut für Halbleitertechnik',
         description: 'Forschung und Lehre im Bereich Halbleitertechnik.',
+        requirements: [
+            'Doktoratsstudium oder Abschluss der Elektrotechnik',
+            'Forschungserfahrung im Bereich Halbleiter von Vorteil',
+        ],
     },
     {
-        id: 11,
+        identifier: 11,
         title: 'Werkstudent*in (m/w/d) als Projektunterstützung 6h pro Woche',
         jobType: 'Werkstudentenstelle',
         areaOfInterest: 'Architektur & Bauwesen',
+        publishedAt: '2026-02-05',
         deadline: '2030-01-01',
+        startDate: 'ab sofort',
+        weeklyHours: '6 h / Woche',
+        organization: 'Bauplanung GmbH',
         description: 'Projektunterstützung für laufende Bauprojekte.',
+        requirements: [
+            'Studium des Bauingenieurwesens oder ähnlichem',
+            'Selbstständige Arbeitsweise und Organisationsgeschick',
+        ],
     },
     {
-        id: 12,
+        identifier: 12,
         title: 'Software-Entwickler*in (m/w/d) Backend',
         jobType: 'Vollzeitstelle',
         areaOfInterest: 'Informatik',
+        publishedAt: '2026-03-10',
         deadline: '2030-03-31',
+        startDate: 'ab sofort',
+        weeklyHours: '38 h / Woche',
+        organization: 'IT-Abteilung',
         description: 'Entwicklung und Wartung von Backend-Systemen.',
+        requirements: [
+            'Abgeschlossenes Studium der Informatik oder ähnlichem',
+            'Kenntnisse in Java, Python oder Go',
+            'Erfahrung mit RESTful APIs und Microservices',
+        ],
     },
     {
-        id: 13,
+        identifier: 13,
         title: 'Forschungsassistent*in Maschinenbau (m/w/d)',
         jobType: 'Universitätsstelle',
         areaOfInterest: 'Maschinenbau',
+        publishedAt: '2026-01-25',
         deadline: '2030-02-28',
+        startDate: 'ab sofort',
+        weeklyHours: '40 h / Woche',
+        organization: 'Institut für Maschinenbau',
         description: 'Mitarbeit in Forschungsprojekten im Bereich Maschinenbau.',
+        requirements: [
+            'Studium des Maschinenbaus oder ähnlichem',
+            'Erfahrung mit FEM-Simulation von Vorteil',
+        ],
     },
     {
-        id: 14,
+        identifier: 14,
         title: 'Praktikant*in Datenanalyse (m/w/d)',
         jobType: 'Praktikum',
         areaOfInterest: 'Informatik',
+        publishedAt: '2026-03-12',
         deadline: '2026-12-31',
+        startDate: 'ab sofort',
+        weeklyHours: '20 h / Woche',
+        organization: 'Data Science Abteilung',
         description: 'Analyse und Visualisierung großer Datensätze.',
+        requirements: [
+            'Studium der Informatik, Statistik oder ähnlichem',
+            'Kenntnisse in Python, R oder SQL',
+        ],
     },
     {
-        id: 15,
+        identifier: 15,
         title: 'Teamassistenz im Bereich Kommunikation (m/w/d)',
         jobType: 'Teilzeitstelle',
         areaOfInterest: 'Kommunikation & Marketing',
+        publishedAt: '2026-02-25',
         deadline: '2030-01-01',
+        startDate: 'ab sofort',
+        weeklyHours: '20 h / Woche',
+        organization: 'Kommunikationsabteilung',
         description: 'Unterstützung des Kommunikationsteams in administrativen Aufgaben.',
+        requirements: [
+            'Ausbildung oder Studium im Bereich Kommunikation oder Verwaltung',
+            'Sehr gute MS-Office-Kenntnisse',
+        ],
     },
     {
-        id: 16,
+        identifier: 16,
         title: 'Werkstudent*in Energie- und Umwelttechnik (m/w/d)',
         jobType: 'Werkstudentenstelle',
         areaOfInterest: 'Wärmetechnik',
+        publishedAt: '2026-03-02',
         deadline: '2030-06-30',
+        startDate: 'ab sofort',
+        weeklyHours: '15 h / Woche',
+        organization: 'Institut für Energie- und Umwelttechnik',
         description: 'Mitarbeit in Projekten zur erneuerbaren Energie.',
+        requirements: [
+            'Studium der Energie- und Umwelttechnik oder ähnlichem',
+            'Interesse an nachhaltigen Energiesystemen',
+        ],
     },
     {
-        id: 17,
+        identifier: 17,
         title: 'Junior Data Scientist (m/w/d)',
         jobType: 'Vollzeitstelle',
         areaOfInterest: 'Informatik',
+        publishedAt: '2026-03-11',
         deadline: '2030-04-15',
+        startDate: 'ab sofort',
+        weeklyHours: '38 h / Woche',
+        organization: 'AI Research Lab',
         description: 'Entwicklung von Machine-Learning-Modellen für industrielle Anwendungen.',
+        requirements: [
+            'Studium der Informatik, Mathematik oder ähnlichem',
+            'Kenntnisse in Machine Learning und Deep Learning',
+            'Erfahrung mit TensorFlow oder PyTorch von Vorteil',
+        ],
     },
     {
-        id: 18,
+        identifier: 18,
         title: 'Konstrukteur*in Fahrzeugtechnik (m/w/d)',
         jobType: 'Vollzeitstelle',
         areaOfInterest: 'Fahrzeugsicherheit',
+        publishedAt: '2026-02-28',
         deadline: '2030-01-01',
+        startDate: 'ab sofort',
+        weeklyHours: '38 h / Woche',
+        organization: 'Institut für Fahrzeugtechnik',
         description: 'Konstruktion und Auslegung von Fahrzeugkomponenten.',
+        requirements: [
+            'Studium der Fahrzeugtechnik, des Maschinenbaus oder ähnlichem',
+            'Kenntnisse in CAD-Programmen (CATIA, SolidWorks)',
+        ],
     },
     {
-        id: 19,
+        identifier: 19,
         title: 'Lehrassistenz Grundlagen Elektrotechnik',
         jobType: 'Universitätsstelle',
         areaOfInterest: 'Elektronik',
+        publishedAt: '2026-01-30',
         deadline: '2030-08-31',
+        startDate: 'ab sofort',
+        weeklyHours: '8 h / Woche',
+        organization: 'Institut für Grundlagen der Elektrotechnik',
         description: 'Betreuung von Übungen und Tutorien in der Grundlagenausbildung.',
+        requirements: [
+            'Fortgeschrittenes Studium der Elektrotechnik',
+            'Didaktische Fähigkeiten und Freude am Unterrichten',
+        ],
     },
     {
-        id: 20,
+        identifier: 20,
         title: 'Projektmanager*in Bauplanung (m/w/d)',
         jobType: 'Vollzeitstelle',
         areaOfInterest: 'Architektur & Bauwesen',
+        publishedAt: '2026-03-06',
         deadline: '2030-01-01',
+        startDate: 'ab sofort',
+        weeklyHours: '38 h / Woche',
+        organization: 'Bauplanung AG',
         description: 'Koordination und Steuerung von Bauprojekten.',
+        requirements: [
+            'Abgeschlossenes Studium des Bauingenieurwesens oder Projektmanagements',
+            'Mehrjährige Erfahrung in der Bauplanung',
+        ],
     },
     {
-        id: 21,
+        identifier: 21,
         title: 'Praktikant*in im Bereich Wärmetechnik',
         jobType: 'Praktikum',
         areaOfInterest: 'Wärmetechnik',
+        publishedAt: '2026-01-10',
         deadline: '2027-03-31',
+        startDate: 'ab sofort',
+        weeklyHours: '20 h / Woche',
+        organization: 'Institut für Wärmetechnik',
         description: 'Praktische Mitarbeit in thermodynamischen Versuchsprojekten.',
+        requirements: [
+            'Studium der Wärmetechnik, des Maschinenbaus oder ähnlichem',
+            'Interesse an experimenteller Forschung',
+        ],
     },
     {
-        id: 22,
+        identifier: 22,
         title: 'Content Creator & Social Media Manager*in (m/w/d)',
         jobType: 'Teilzeitstelle',
         areaOfInterest: 'Kommunikation & Marketing',
+        publishedAt: '2026-03-09',
         deadline: '2030-01-01',
+        startDate: 'ab sofort',
+        weeklyHours: '20 h / Woche',
+        organization: 'Marketingabteilung',
         description: 'Erstellung von Content für verschiedene Social-Media-Plattformen.',
+        requirements: [
+            'Studium der Kommunikationswissenschaften, Mediendesign oder ähnlichem',
+            'Kreativität und Erfahrung in der Content-Erstellung',
+        ],
     },
 ];
 
@@ -200,6 +382,8 @@ class ViewJobOffers extends DBPBulletinLitElement {
         this.sortOrder = 'date-asc';
         this.currentPage = 1;
         this.pageSize = DEFAULT_PAGE_SIZE;
+        /** @type {object|null} Currently selected job offer shown in the detail dialog */
+        this._selectedJob = null;
     }
 
     static get properties() {
@@ -211,7 +395,79 @@ class ViewJobOffers extends DBPBulletinLitElement {
             sortOrder: {type: String, state: true},
             currentPage: {type: Number, state: true},
             pageSize: {type: Number, state: true},
+            _selectedJob: {state: true},
         };
+    }
+
+    update(changedProperties) {
+        super.update(changedProperties);
+
+        changedProperties.forEach((oldValue, propName) => {
+            switch (propName) {
+                case 'routingUrl':
+                    this.handleRoutingUrlChange();
+                    break;
+            }
+        });
+    }
+
+    /**
+     * Parses the current routing URL and opens or closes the detail dialog accordingly.
+     * Uses updateComplete to defer the dialog open until after Lit has finished rendering,
+     * which guarantees the dialog element is present in the shadow DOM.
+     */
+    handleRoutingUrlChange() {
+        const {pathSegments} = this.getRoutingData();
+
+        // Expected URL pattern: job/<identifier>
+        if (pathSegments[0] === 'job' && pathSegments[1]) {
+            const identifier = Number(pathSegments[1]);
+            const job = MOCK_JOB_OFFERS.find((j) => j.identifier === identifier) ?? null;
+            if (job) {
+                this.openJobDialog(job);
+            }
+        } else {
+            // Any other path — close the dialog if it is open
+            const detailEl = this.shadowRoot?.querySelector('dbp-bulletin-job-offer-detail');
+            if (detailEl) {
+                detailEl.close();
+            }
+        }
+    }
+
+    /**
+     * Sets the selected job and opens the detail dialog.
+     * The dialog element is always present in the DOM, so the querySelector inside
+     * updateComplete.then() is guaranteed to succeed.
+     * @param {object} job
+     */
+    openJobDialog(job) {
+        this._selectedJob = job;
+        // Defer the open() call until after Lit has committed the current render,
+        // so the detail component has received the updated job property.
+        this.updateComplete.then(() => {
+            const detailEl = this.shadowRoot?.querySelector('dbp-bulletin-job-offer-detail');
+            if (detailEl) {
+                detailEl.open();
+            }
+        });
+    }
+
+    /**
+     * Opens the job detail dialog from a "View" button click and updates the routing URL.
+     * The routing URL change triggers handleRoutingUrlChange, which calls openJobDialog.
+     * @param {object} job
+     */
+    openJob(job) {
+        this.sendSetPropertyEvent('routing-url', `job/${job.identifier}`, true);
+    }
+
+    /**
+     * Called when the detail dialog is closed; resets the routing URL to root.
+     */
+    onDialogClosed() {
+        this._selectedJob = null;
+        this.sendSetPropertyEvent('routing-url', '/', true);
     }
 
     /**
@@ -232,8 +488,8 @@ class ViewJobOffers extends DBPBulletinLitElement {
                 !this.filterAreaOfInterest || job.areaOfInterest === this.filterAreaOfInterest;
             return matchesSearch && matchesJobType && matchesAreaOfInterest;
         }).sort((a, b) => {
-            const dateA = new Date(a.deadline);
-            const dateB = new Date(b.deadline);
+            const dateA = new Date(a.deadline).getTime();
+            const dateB = new Date(b.deadline).getTime();
             return this.sortOrder === 'date-desc' ? dateB - dateA : dateA - dateB;
         });
     }
@@ -275,12 +531,6 @@ class ViewJobOffers extends DBPBulletinLitElement {
 
     goToPage(page) {
         this.currentPage = page;
-    }
-
-    openJob(job) {
-        // Placeholder: navigate to job detail view
-        const label = this._i18n ? this._i18n.t('view-job-offers.open-job') : 'Open';
-        alert(`${label}: ${job.title}`);
     }
 
     render() {
@@ -423,7 +673,7 @@ class ViewJobOffers extends DBPBulletinLitElement {
                           <div class="job-grid">
                               ${repeat(
                                   pageJobs,
-                                  (job) => job.id,
+                                  (job) => job.identifier,
                                   (job) => html`
                                       <div class="job-card">
                                           <div class="job-card-body">
@@ -533,6 +783,12 @@ class ViewJobOffers extends DBPBulletinLitElement {
                           </div>
                       `
                     : ''}
+
+                <!-- Job detail dialog — always in the DOM; job property drives its content -->
+                <dbp-bulletin-job-offer-detail
+                    .job="${this._selectedJob}"
+                    lang="${this.lang}"
+                    @dbp-modal-closed="${this.onDialogClosed}"></dbp-bulletin-job-offer-detail>
             </div>
         `;
     }

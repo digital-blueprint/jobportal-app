@@ -1,11 +1,27 @@
 {
+    "job-offer-detail": {
+        "application-title": "Application",
+        "apply": "Apply",
+        "apply-success": "Your application has been submitted successfully.",
+        "deadline": "Application deadline",
+        "email": "E-Mail Address",
+        "first-name": "First name",
+        "last-name": "Last name",
+        "message": "Free text",
+        "organization": "Organisation",
+        "published-at": "Published on",
+        "requirements": "Requirements",
+        "share": "Share position",
+        "start-date": "Start date",
+        "submit": "Submit application",
+        "weekly-hours": "Weekly hours"
+    },
     "view-job-offers": {
         "areas-of-interest": "Areas of Interest",
         "available-positions": "Available Positions",
         "deadline": "Application deadline",
         "job-type": "Job Type",
         "no-results": "No job offers found.",
-        "open-job": "Open position",
         "page-size": "Items per page",
         "pagination-first": "First",
         "pagination-last": "Last",
