@@ -16,6 +16,15 @@
         "submit": "Submit application",
         "weekly-hours": "Weekly hours"
     },
+    "manage-job-offers": {
+        "col-id": "ID",
+        "col-title": "Title",
+        "create-btn": "Create new job offer",
+        "edit-btn-aria": "Edit job offer: {{title}}",
+        "edit-btn-title": "Edit",
+        "preview-btn-aria": "Preview job offer: {{title}}",
+        "preview-btn-title": "Preview"
+    },
     "view-job-offers": {
         "areas-of-interest": "Areas of Interest",
         "available-positions": "Available Positions",

@@ -16,6 +16,15 @@
         "submit": "Bewerbung abschicken",
         "weekly-hours": "Anstellungsausmaß"
     },
+    "manage-job-offers": {
+        "col-id": "ID",
+        "col-title": "Titel",
+        "create-btn": "Neues Jobangebot erstellen",
+        "edit-btn-aria": "Jobangebot bearbeiten: {{title}}",
+        "edit-btn-title": "Bearbeiten",
+        "preview-btn-aria": "Jobangebot ansehen: {{title}}",
+        "preview-btn-title": "Vorschau"
+    },
     "view-job-offers": {
         "areas-of-interest": "Interessensgebiete",
         "available-positions": "Verfügbare Stellen",
