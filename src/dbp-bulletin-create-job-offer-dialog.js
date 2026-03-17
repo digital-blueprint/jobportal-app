@@ -313,6 +313,7 @@ export class CreateJobOfferDialog extends ScopedElementsMixin(DBPBulletinLitElem
             /* Match the color of the modal's own close button (--dbp-accent) */
             .title-icon {
                 color: var(--dbp-accent);
+                top: 0;
             }
 
             /* Dialog title layout */
@@ -338,6 +339,12 @@ export class CreateJobOfferDialog extends ScopedElementsMixin(DBPBulletinLitElem
                 display: inline-flex;
                 align-items: center;
                 gap: 0.4rem;
+            }
+
+            /* Icon inside buttons: override the default top: 0.125em offset */
+            .btn-icon {
+                flex-shrink: 0;
+                top: 0;
             }
 
             /* Section headings */

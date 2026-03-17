@@ -368,6 +368,7 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
 
             .btn-icon {
                 flex-shrink: 0;
+                top: 0;
             }
 
             /* Description paragraph */

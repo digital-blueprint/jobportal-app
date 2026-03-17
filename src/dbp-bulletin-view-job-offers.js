@@ -591,6 +591,7 @@ class ViewJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
 
             .btn-icon {
                 flex-shrink: 0;
+                top: 0;
             }
 
             /* No results message */

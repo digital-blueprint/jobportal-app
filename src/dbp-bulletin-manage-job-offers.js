@@ -238,6 +238,12 @@ class ManageJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
                 gap: 0.4rem;
             }
 
+            /* Icon inside buttons: override the default top: 0.125em offset */
+            .btn-icon {
+                flex-shrink: 0;
+                top: 0;
+            }
+
             /* Action buttons container inside the table cell */
             .actions-cell {
                 display: flex;
