@@ -6,6 +6,7 @@ import {Icon, IconButton} from '@dbp-toolkit/common';
 import {TabulatorTable} from '@dbp-toolkit/tabulator-table/src/tabulator-table';
 import DBPBulletinLitElement from './dbp-bulletin-lit-element.js';
 import {JobOfferDialog} from './dbp-bulletin-job-offer-dialog.js';
+import {JobOfferPreviewDialog} from './dbp-bulletin-job-offer-preview-dialog.js';
 import {MOCK_JOB_OFFERS} from './utils/mock.js';
 
 class ManageJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
@@ -15,6 +16,7 @@ class ManageJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
             'dbp-icon-button': IconButton,
             'dbp-tabulator-table': TabulatorTable,
             'dbp-bulletin-job-offer-dialog': JobOfferDialog,
+            'dbp-bulletin-job-offer-preview-dialog': JobOfferPreviewDialog,
         };
     }
 
@@ -62,9 +64,12 @@ class ManageJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
         }
     }
 
-    /** Placeholder handler for the preview/view action. */
+    /** Opens the preview dialog for the given job offer. */
     onPreview(job) {
-        console.log('Preview job offer:', job.identifier);
+        const dialog = this._('dbp-bulletin-job-offer-preview-dialog');
+        if (dialog) {
+            dialog.open(job);
+        }
     }
 
     /** Opens the create job offer dialog (no pre-fill). */
@@ -210,6 +215,15 @@ class ManageJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
                 @dbp-job-offer-create="${(e) => console.log('New job offer:', e.detail)}"
                 @dbp-job-offer-update="${(e) =>
                     console.log('Updated job offer:', e.detail)}"></dbp-bulletin-job-offer-dialog>
+
+            <!-- Job offer preview dialog — opened by the keyword-research icon button -->
+            <dbp-bulletin-job-offer-preview-dialog
+                lang="${this.lang}"
+                @dbp-job-offer-update="${(e) =>
+                    console.log(
+                        'Updated job offer:',
+                        e.detail,
+                    )}"></dbp-bulletin-job-offer-preview-dialog>
         `;
     }
 

@@ -1,0 +1,304 @@
+import {css, html} from 'lit';
+import * as commonUtils from '@dbp-toolkit/common/utils';
+import * as commonStyles from '@dbp-toolkit/common/src/styles.js';
+import {ScopedElementsMixin} from '@dbp-toolkit/common/src/scoped/ScopedElementsMixin.js';
+import {Icon, Modal} from '@dbp-toolkit/common';
+import DBPBulletinLitElement from './dbp-bulletin-lit-element.js';
+import {JobOfferDialog} from './dbp-bulletin-job-offer-dialog.js';
+
+export class JobOfferPreviewDialog extends ScopedElementsMixin(DBPBulletinLitElement) {
+    static get scopedElements() {
+        return {
+            'dbp-icon': Icon,
+            'dbp-modal': Modal,
+            'dbp-bulletin-job-offer-dialog': JobOfferDialog,
+        };
+    }
+
+    constructor() {
+        super();
+        /** @type {object|null} The job offer currently being previewed */
+        this.job = null;
+    }
+
+    static get properties() {
+        return {
+            ...super.properties,
+            job: {state: true},
+        };
+    }
+
+    /**
+     * Opens the preview dialog with the given job offer.
+     * @param {object} job
+     */
+    open(job) {
+        this.job = job;
+        const modal = this._('dbp-modal');
+        if (modal) {
+            modal.open();
+        }
+    }
+
+    /** Closes the preview dialog. */
+    close() {
+        const modal = this._('dbp-modal');
+        if (modal) {
+            modal.close();
+        }
+    }
+
+    /** Opens the edit dialog pre-filled with the current job. */
+    _onEdit() {
+        const editDialog = this._('dbp-bulletin-job-offer-dialog');
+        if (editDialog) {
+            editDialog.open(this.job);
+        }
+    }
+
+    /**
+     * Formats an ISO date string (YYYY-MM-DD) to a locale-aware display string.
+     * Falls back to the raw value when parsing fails.
+     * @param {string} dateStr
+     * @returns {string}
+     */
+    _formatDate(dateStr) {
+        if (!dateStr) return '';
+        try {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString(this.lang === 'de' ? 'de-AT' : 'en-GB');
+        } catch {
+            return dateStr;
+        }
+    }
+
+    render() {
+        const i18n = this._i18n;
+        const t = (key) => (i18n ? i18n.t(key) : key);
+        const job = this.job;
+
+        return html`
+            <dbp-modal
+                modal-id="job-offer-preview-dialog"
+                lang="${this.lang}"
+                style="--dbp-modal-min-width: min(95vw, 760px); --dbp-modal-max-width: min(95vw, 760px); --dbp-modal-max-height: 90vh; --dbp-modal-content-overflow-y: auto;">
+                <div slot="title">
+                    <h3 class="preview-title">${job ? job.title : ''}</h3>
+                </div>
+
+                <div slot="content" class="preview-content">
+                    ${job
+                        ? html`
+                              <!-- Meta information row -->
+                              <div class="meta-row">
+                                  <div class="meta-fields">
+                                      <p class="meta-item">
+                                          <strong>${t('job-offer-preview.published-at')}:</strong>
+                                          ${this._formatDate(job.publishedAt)}
+                                      </p>
+                                      <p class="meta-item">
+                                          <strong>${t('job-offer-preview.deadline')}:</strong>
+                                          ${this._formatDate(job.deadline)}
+                                      </p>
+                                      <p class="meta-item">
+                                          <strong>${t('job-offer-preview.start-date')}:</strong>
+                                          ${job.startDate ?? ''}
+                                      </p>
+                                      <p class="meta-item">
+                                          <strong>${t('job-offer-preview.weekly-hours')}:</strong>
+                                          ${job.weeklyHours ?? ''}
+                                      </p>
+                                      <p class="meta-item">
+                                          <strong>${t('job-offer-preview.organization')}:</strong>
+                                          ${job.organization ?? ''}
+                                      </p>
+                                  </div>
+                                  ${job.areaOfInterest
+                                      ? html`
+                                            <span class="area-badge">${job.areaOfInterest}</span>
+                                        `
+                                      : ''}
+                              </div>
+
+                              <!-- Action buttons -->
+                              <div class="action-buttons">
+                                  <button
+                                      class="button is-secondary action-btn"
+                                      type="button"
+                                      @click="${this._onEdit}">
+                                      <dbp-icon
+                                          class="btn-icon"
+                                          name="pencil"
+                                          aria-hidden="true"></dbp-icon>
+                                      ${t('job-offer-preview.edit')}
+                                  </button>
+                                  <button
+                                      class="button is-secondary action-btn"
+                                      type="button"
+                                      @click="${() =>
+                                          console.log('Delete job offer:', job.identifier)}">
+                                      <dbp-icon
+                                          class="btn-icon"
+                                          name="trash"
+                                          aria-hidden="true"></dbp-icon>
+                                      ${t('job-offer-preview.delete')}
+                                  </button>
+                                  <button
+                                      class="button is-primary action-btn"
+                                      type="button"
+                                      @click="${() =>
+                                          console.log('View applications for:', job.identifier)}">
+                                      <dbp-icon
+                                          class="btn-icon"
+                                          name="person"
+                                          aria-hidden="true"></dbp-icon>
+                                      ${t('job-offer-preview.view-applications')}
+                                  </button>
+                              </div>
+
+                              <!-- Description -->
+                              <p class="description">${job.description}</p>
+
+                              <!-- Requirements section -->
+                              ${job.requirements && job.requirements.length > 0
+                                  ? html`
+                                        <h4 class="section-heading">
+                                            ${t('job-offer-preview.requirements')}
+                                        </h4>
+                                        <ul class="requirements-list">
+                                            ${job.requirements.map(
+                                                (req) => html`
+                                                    <li>${req}</li>
+                                                `,
+                                            )}
+                                        </ul>
+                                    `
+                                  : ''}
+
+                              <!-- Optional link -->
+                              ${job.linkName && job.linkUrl
+                                  ? html`
+                                        <p class="link-row">
+                                            <a
+                                                href="${job.linkUrl}"
+                                                target="_blank"
+                                                rel="noopener noreferrer">
+                                                ${job.linkName}
+                                            </a>
+                                        </p>
+                                    `
+                                  : ''}
+                          `
+                        : ''}
+                </div>
+            </dbp-modal>
+
+            <!-- Edit dialog — nested inside the preview dialog -->
+            <dbp-bulletin-job-offer-dialog
+                lang="${this.lang}"
+                @dbp-job-offer-update="${(e) =>
+                    console.log('Updated job offer:', e.detail)}"></dbp-bulletin-job-offer-dialog>
+        `;
+    }
+
+    static get styles() {
+        return css`
+            ${commonStyles.getThemeCSS()}
+            ${commonStyles.getGeneralCSS()}
+            ${commonStyles.getButtonCSS()}
+
+            .preview-title {
+                margin: 0;
+                font-size: 1.4rem;
+                font-weight: 700;
+            }
+
+            .preview-content {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            /* Top meta row: left = key-value list, right = area badge */
+            .meta-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .meta-fields {
+                display: flex;
+                flex-direction: column;
+                gap: 0.1rem;
+            }
+
+            .meta-item {
+                margin: 0;
+                font-size: 0.95rem;
+            }
+
+            /* Area-of-interest badge */
+            .area-badge {
+                display: inline-block;
+                padding: 0.25rem 0.75rem;
+                border: 1px solid var(--dbp-content-surface, #333);
+                border-radius: 2px;
+                font-size: 0.9rem;
+                white-space: nowrap;
+            }
+
+            /* Action buttons row */
+            .action-buttons {
+                display: flex;
+                gap: 0.75rem;
+                flex-wrap: wrap;
+            }
+
+            .action-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.4rem;
+            }
+
+            /* Icon inside buttons */
+            .btn-icon {
+                flex-shrink: 0;
+                top: 0;
+            }
+
+            /* Job description */
+            .description {
+                margin: 0;
+                line-height: 1.6;
+            }
+
+            /* Requirements heading */
+            .section-heading {
+                font-size: 1.1rem;
+                font-weight: 700;
+                margin: 0.5rem 0 0.5rem;
+            }
+
+            /* Requirements list */
+            .requirements-list {
+                margin: 0;
+                padding-left: 1.5rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.4rem;
+            }
+
+            .requirements-list li {
+                line-height: 1.5;
+            }
+
+            /* Optional link */
+            .link-row {
+                margin: 0;
+            }
+        `;
+    }
+}
+
+commonUtils.defineCustomElement('dbp-bulletin-job-offer-preview-dialog', JobOfferPreviewDialog);

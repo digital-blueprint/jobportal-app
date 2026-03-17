@@ -16,6 +16,17 @@
         "submit": "Submit application",
         "weekly-hours": "Weekly hours"
     },
+    "job-offer-preview": {
+        "deadline": "Application deadline",
+        "delete": "Delete",
+        "edit": "Edit",
+        "organization": "Organisation",
+        "published-at": "Published on",
+        "requirements": "Requirements",
+        "start-date": "Start date",
+        "view-applications": "View applications",
+        "weekly-hours": "Weekly hours"
+    },
     "manage-job-offers": {
         "col-id": "ID",
         "col-title": "Title",

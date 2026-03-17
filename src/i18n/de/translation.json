@@ -16,6 +16,17 @@
         "submit": "Bewerbung abschicken",
         "weekly-hours": "Anstellungsausmaß"
     },
+    "job-offer-preview": {
+        "deadline": "Bewerbungsfrist",
+        "delete": "Löschen",
+        "edit": "Bearbeiten",
+        "organization": "Organisation",
+        "published-at": "Veröffentlicht am",
+        "requirements": "Anforderungen",
+        "start-date": "Dienstbeginn",
+        "view-applications": "Bewerbungen ansehen",
+        "weekly-hours": "Anstellungsausmaß"
+    },
     "manage-job-offers": {
         "col-id": "ID",
         "col-title": "Titel",
