@@ -7,4 +7,4 @@
 - Don't try to open the webpage, the page is behind an SSO login, so you won't be able to access it.
 - If you can use existing dbp-icons, use them instead of creating new icons.
 - Everything needs to be properly translated with i18next.
-- For dialogs always use dbp-dialog.
+- For dialogs always use dbp-modal.

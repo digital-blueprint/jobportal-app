@@ -15,7 +15,7 @@ export class CreateJobOfferDialog extends ScopedElementsMixin(DBPBulletinLitElem
     static get scopedElements() {
         return {
             'dbp-icon': Icon,
-            'dbp-dialog': Modal,
+            'dbp-modal': Modal,
             'dbp-string-element': DbpStringElement,
             'dbp-date-element': DbpDateElement,
             'dbp-enum-element': DbpEnumElement,
@@ -64,7 +64,7 @@ export class CreateJobOfferDialog extends ScopedElementsMixin(DBPBulletinLitElem
         this._formJobType = '';
         this._formAreaOfInterest = '';
 
-        const dialog = this._('dbp-dialog');
+        const dialog = this._('dbp-modal');
         if (dialog) {
             dialog.open();
         }
@@ -72,7 +72,7 @@ export class CreateJobOfferDialog extends ScopedElementsMixin(DBPBulletinLitElem
 
     /** Closes the dialog. */
     close() {
-        const dialog = this._('dbp-dialog');
+        const dialog = this._('dbp-modal');
         if (dialog) {
             dialog.close();
         }
@@ -151,7 +151,7 @@ export class CreateJobOfferDialog extends ScopedElementsMixin(DBPBulletinLitElem
         const t = (key) => (i18n ? i18n.t(key) : key);
 
         return html`
-            <dbp-dialog
+            <dbp-modal
                 modal-id="create-job-offer-dialog"
                 lang="${this.lang}"
                 sticky-footer
@@ -300,7 +300,7 @@ export class CreateJobOfferDialog extends ScopedElementsMixin(DBPBulletinLitElem
                         @change="${(e) =>
                             (this._formAreaOfInterest = e.detail.value)}"></dbp-enum-element>
                 </div>
-            </dbp-dialog>
+            </dbp-modal>
         `;
     }
 
