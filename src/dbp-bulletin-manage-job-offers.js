@@ -5,7 +5,7 @@ import {ScopedElementsMixin} from '@dbp-toolkit/common/src/scoped/ScopedElements
 import {Icon, IconButton} from '@dbp-toolkit/common';
 import {TabulatorTable} from '@dbp-toolkit/tabulator-table/src/tabulator-table';
 import DBPBulletinLitElement from './dbp-bulletin-lit-element.js';
-import {CreateJobOfferDialog} from './dbp-bulletin-create-job-offer-dialog.js';
+import {JobOfferDialog} from './dbp-bulletin-job-offer-dialog.js';
 import {MOCK_JOB_OFFERS} from './utils/mock.js';
 
 class ManageJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
@@ -14,7 +14,7 @@ class ManageJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
             'dbp-icon': Icon,
             'dbp-icon-button': IconButton,
             'dbp-tabulator-table': TabulatorTable,
-            'dbp-bulletin-create-job-offer-dialog': CreateJobOfferDialog,
+            'dbp-bulletin-job-offer-dialog': JobOfferDialog,
         };
     }
 
@@ -56,7 +56,10 @@ class ManageJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
 
     /** Placeholder handler for the edit action. */
     onEdit(job) {
-        console.log('Edit job offer:', job.identifier);
+        const dialog = this._('dbp-bulletin-job-offer-dialog');
+        if (dialog) {
+            dialog.open(job);
+        }
     }
 
     /** Placeholder handler for the preview/view action. */
@@ -64,9 +67,9 @@ class ManageJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
         console.log('Preview job offer:', job.identifier);
     }
 
-    /** Opens the create job offer dialog. */
+    /** Opens the create job offer dialog (no pre-fill). */
     _openCreateDialog() {
-        const dialog = this._('dbp-bulletin-create-job-offer-dialog');
+        const dialog = this._('dbp-bulletin-job-offer-dialog');
         if (dialog) {
             dialog.open();
         }
@@ -201,14 +204,12 @@ class ManageJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
                     .data="${this._tableData}"></dbp-tabulator-table>
             </div>
 
-            <!-- Create job offer dialog (separate web component) -->
-            <dbp-bulletin-create-job-offer-dialog
+            <!-- Job offer dialog — used for both create and edit -->
+            <dbp-bulletin-job-offer-dialog
                 lang="${this.lang}"
-                @dbp-job-offer-create="${(e) =>
-                    console.log(
-                        'New job offer:',
-                        e.detail,
-                    )}"></dbp-bulletin-create-job-offer-dialog>
+                @dbp-job-offer-create="${(e) => console.log('New job offer:', e.detail)}"
+                @dbp-job-offer-update="${(e) =>
+                    console.log('Updated job offer:', e.detail)}"></dbp-bulletin-job-offer-dialog>
         `;
     }
 

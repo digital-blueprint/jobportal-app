@@ -11,7 +11,7 @@ import {MOCK_JOB_OFFERS} from './utils/mock.js';
 const JOB_TYPES = [...new Set(MOCK_JOB_OFFERS.map((j) => j.jobType))].sort();
 const AREAS_OF_INTEREST = [...new Set(MOCK_JOB_OFFERS.map((j) => j.areaOfInterest))].sort();
 
-export class CreateJobOfferDialog extends ScopedElementsMixin(DBPBulletinLitElement) {
+export class JobOfferDialog extends ScopedElementsMixin(DBPBulletinLitElement) {
     static get scopedElements() {
         return {
             'dbp-icon': Icon,
@@ -24,6 +24,9 @@ export class CreateJobOfferDialog extends ScopedElementsMixin(DBPBulletinLitElem
 
     constructor() {
         super();
+
+        /** @type {object|null} When set the dialog operates in edit mode and pre-fills the form */
+        this.job = null;
 
         // Form field state
         /** @type {string} Job title input value */
@@ -50,8 +53,50 @@ export class CreateJobOfferDialog extends ScopedElementsMixin(DBPBulletinLitElem
         this._formAreaOfInterest = '';
     }
 
-    /** Opens the dialog and resets all form fields to their defaults. */
-    open() {
+    static get properties() {
+        return {
+            ...super.properties,
+            job: {type: Object},
+            _formTitle: {state: true},
+            _formPublishedAt: {state: true},
+            _formDeadline: {state: true},
+            _formDescription: {state: true},
+        };
+    }
+
+    /**
+     * Returns true when all required fields have a non-empty value.
+     * @returns {boolean}
+     */
+    get _isFormValid() {
+        return (
+            this._formTitle.trim() !== '' &&
+            this._formPublishedAt.trim() !== '' &&
+            this._formDeadline.trim() !== '' &&
+            this._formDescription.trim() !== ''
+        );
+    }
+
+    /**
+     * Fills form fields from a job object.
+     * @param {object} job
+     */
+    _fillFromJob(job) {
+        this._formTitle = job.title ?? '';
+        this._formPublishedAt = job.publishedAt ?? '';
+        this._formDeadline = job.deadline ?? '';
+        this._formDescription = job.description ?? '';
+        this._formLinkName = job.linkName ?? '';
+        this._formLinkUrl = job.linkUrl ?? '';
+        this._formStartDate = job.startDate ?? '';
+        this._formSalary = job.salary ?? '';
+        this._formWeeklyHours = job.weeklyHours ?? '';
+        this._formJobType = job.jobType ?? '';
+        this._formAreaOfInterest = job.areaOfInterest ?? '';
+    }
+
+    /** Resets all form fields to empty defaults. */
+    _resetForm() {
         this._formTitle = '';
         this._formPublishedAt = '';
         this._formDeadline = '';
@@ -63,6 +108,21 @@ export class CreateJobOfferDialog extends ScopedElementsMixin(DBPBulletinLitElem
         this._formWeeklyHours = '';
         this._formJobType = '';
         this._formAreaOfInterest = '';
+    }
+
+    /**
+     * Opens the dialog.
+     * When a job object is provided the form is pre-filled for editing;
+     * otherwise all fields are reset for creating a new offer.
+     * @param {object|null} [job]
+     */
+    open(job = null) {
+        this.job = job;
+        if (job) {
+            this._fillFromJob(job);
+        } else {
+            this._resetForm();
+        }
 
         const dialog = this._('dbp-modal');
         if (dialog) {
@@ -79,43 +139,39 @@ export class CreateJobOfferDialog extends ScopedElementsMixin(DBPBulletinLitElem
     }
 
     /**
-     * Handles saving the new job offer.
-     * Validates required fields first; if valid, dispatches a 'dbp-job-offer-create' event
+     * Handles saving the job offer.
+     * Validates required fields first; if valid, dispatches either a
+     * 'dbp-job-offer-update' (edit mode) or 'dbp-job-offer-create' (create mode) event
      * and closes the dialog.
      * TODO: Wire up to a real API endpoint.
      */
     _onSave() {
-        const titleEl = this._('dbp-string-element[name="job-title"]');
-        const publishedAtEl = this._('dbp-date-element[name="published-at"]');
-        const deadlineEl = this._('dbp-date-element[name="deadline"]');
-        const descriptionEl = this._('dbp-string-element[name="description"]');
-
-        let valid = true;
-        [titleEl, publishedAtEl, deadlineEl, descriptionEl].forEach((el) => {
-            if (el && !el.handleErrors()) {
-                valid = false;
-            }
-        });
-
-        if (!valid) {
+        if (!this._isFormValid) {
             return;
         }
 
+        const detail = {
+            title: this._formTitle,
+            publishedAt: this._formPublishedAt,
+            deadline: this._formDeadline,
+            description: this._formDescription,
+            linkName: this._formLinkName,
+            linkUrl: this._formLinkUrl,
+            startDate: this._formStartDate,
+            salary: this._formSalary,
+            weeklyHours: this._formWeeklyHours,
+            jobType: this._formJobType,
+            areaOfInterest: this._formAreaOfInterest,
+        };
+
+        const eventName = this.job ? 'dbp-job-offer-update' : 'dbp-job-offer-create';
+        if (this.job) {
+            detail.identifier = this.job.identifier;
+        }
+
         this.dispatchEvent(
-            new CustomEvent('dbp-job-offer-create', {
-                detail: {
-                    title: this._formTitle,
-                    publishedAt: this._formPublishedAt,
-                    deadline: this._formDeadline,
-                    description: this._formDescription,
-                    linkName: this._formLinkName,
-                    linkUrl: this._formLinkUrl,
-                    startDate: this._formStartDate,
-                    salary: this._formSalary,
-                    weeklyHours: this._formWeeklyHours,
-                    jobType: this._formJobType,
-                    areaOfInterest: this._formAreaOfInterest,
-                },
+            new CustomEvent(eventName, {
+                detail,
                 bubbles: true,
                 composed: true,
             }),
@@ -150,22 +206,31 @@ export class CreateJobOfferDialog extends ScopedElementsMixin(DBPBulletinLitElem
         const i18n = this._i18n;
         const t = (key) => (i18n ? i18n.t(key) : key);
 
+        const isEditMode = this.job !== null;
+        const titleKey = isEditMode
+            ? 'manage-job-offers.dialog-title-edit'
+            : 'manage-job-offers.dialog-title-create';
+        const saveDisabled = !this._isFormValid;
+
         return html`
             <dbp-modal
-                modal-id="create-job-offer-dialog"
+                modal-id="job-offer-dialog"
                 lang="${this.lang}"
                 sticky-footer
                 style="--dbp-modal-min-width: min(95vw, 740px); --dbp-modal-max-width: min(95vw, 740px); --dbp-modal-max-height: 90vh; --dbp-modal-content-overflow-y: auto;">
-                <!-- Title with a plus icon colored like the modal close button -->
+                <!-- Title: plus icon for create, pencil icon for edit -->
                 <div slot="title">
                     <h3 class="dialog-title">
-                        <dbp-icon class="title-icon" name="plus" aria-hidden="true"></dbp-icon>
-                        ${t('manage-job-offers.dialog-title')}
+                        <dbp-icon
+                            class="title-icon"
+                            name="${isEditMode ? 'pencil' : 'plus'}"
+                            aria-hidden="true"></dbp-icon>
+                        ${t(titleKey)}
                     </h3>
                 </div>
 
                 <!-- Form content -->
-                <div slot="content" class="create-dialog-content">
+                <div slot="content" class="dialog-content">
                     <!-- Action bar: Cancel (left) + Save (right) -->
                     <div class="dialog-actions-bar">
                         <button
@@ -178,6 +243,7 @@ export class CreateJobOfferDialog extends ScopedElementsMixin(DBPBulletinLitElem
                         <button
                             class="button is-primary save-btn"
                             type="button"
+                            ?disabled="${saveDisabled}"
                             @click="${this._onSave}">
                             <dbp-icon class="btn-icon" name="save" aria-hidden="true"></dbp-icon>
                             ${t('manage-job-offers.dialog-save')}
@@ -369,9 +435,9 @@ export class CreateJobOfferDialog extends ScopedElementsMixin(DBPBulletinLitElem
             }
 
             /* Vertical spacing between consecutive form elements */
-            .create-dialog-content dbp-string-element,
-            .create-dialog-content dbp-date-element,
-            .create-dialog-content dbp-enum-element {
+            .dialog-content dbp-string-element,
+            .dialog-content dbp-date-element,
+            .dialog-content dbp-enum-element {
                 display: block;
                 margin-bottom: 0.75rem;
             }
@@ -385,4 +451,4 @@ export class CreateJobOfferDialog extends ScopedElementsMixin(DBPBulletinLitElem
     }
 }
 
-commonUtils.defineCustomElement('dbp-bulletin-create-job-offer-dialog', CreateJobOfferDialog);
+commonUtils.defineCustomElement('dbp-bulletin-job-offer-dialog', JobOfferDialog);

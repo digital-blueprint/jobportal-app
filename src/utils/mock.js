@@ -8,9 +8,12 @@
  * @property {string} deadline
  * @property {string} startDate
  * @property {string} weeklyHours
+ * @property {string} [salary]
  * @property {string} organization
  * @property {string} description
  * @property {string[]} requirements
+ * @property {string} [linkName]
+ * @property {string} [linkUrl]
  */
 
 /** @type {JobOffer[]} */
@@ -24,12 +27,15 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2030-01-01',
         startDate: 'ab sofort',
         weeklyHours: '40 h / Woche',
+        salary: '€ 3.277,30 brutto/Monat',
         organization: 'Institut für Elektrotechnik',
         description: 'Mitarbeit in Forschung und Lehre im Bereich Elektrotechnik.',
         requirements: [
             'Studium der Elektrotechnik oder eines verwandten Fachbereichs',
             'Grundkenntnisse in analoger und digitaler Schaltungstechnik',
         ],
+        linkName: 'Mehr Informationen',
+        linkUrl: 'https://www.example.com/jobs/elektrotechnik',
     },
     {
         identifier: 'a1b2c3d4-0002-4000-8000-000000000002',
@@ -40,6 +46,7 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2030-01-01',
         startDate: 'ab sofort',
         weeklyHours: '6 h / Woche',
+        salary: '€ 12,00 brutto/Stunde',
         organization: 'Institut für Bautechnik',
         description: 'Unterstützung laufender Projekte im Bereich Bauwesen.',
         requirements: [
@@ -56,12 +63,15 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2030-01-01',
         startDate: 'ab sofort',
         weeklyHours: '20 h / Woche',
+        salary: '€ 1.400,00 brutto/Monat',
         organization: 'Marketing Abteilung',
         description: 'Durchführung von Marktforschungsanalysen und Aufbereitung von Daten.',
         requirements: [
             'Studium der Wirtschaftswissenschaften, Marketing oder ähnlichem',
             'Erfahrung mit Datenanalyse-Tools',
         ],
+        linkName: 'Stellenausschreibung',
+        linkUrl: 'https://www.example.com/jobs/marketing-research',
     },
     {
         identifier: 'a1b2c3d4-0004-4000-8000-000000000004',
@@ -72,6 +82,7 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2030-01-01',
         startDate: 'ab sofort',
         weeklyHours: '10 h / Woche',
+        salary: '€ 12,00 brutto/Stunde',
         organization: 'Institut für Hochbau',
         description: 'Unterstützung bei Planungsaufgaben im Hochbau.',
         requirements: [
@@ -88,6 +99,7 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2026-06-30',
         startDate: 'ab sofort',
         weeklyHours: '15 h / Woche',
+        salary: '€ 13,50 brutto/Stunde',
         organization: 'Institut für Informatik',
         description:
             'Du suchst einen flexiblen Studentenjob, der nicht nur Deine Fähigkeiten stärkt, sondern Dich auch persönlich weiterbringt? Wir bieten Dir ein inspirierendes Arbeitsumfeld, das Offenheit, Vielfalt und Teamgeist lebt. Von Anfang an wirst Du aktiv in spannende Projekte eingebunden, sammelst wertvolle Praxiserfahrungen und trägst mit Deinem Engagement zur Umsetzung nachhaltiger Initiativen bei.',
@@ -107,6 +119,7 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2030-01-01',
         startDate: 'ab sofort',
         weeklyHours: '20 h / Woche',
+        salary: '€ 1.200,00 brutto/Monat',
         organization: 'Fahrzeugsicherheit Institut',
         description: 'Erstellung von Reports und Analysen im Bereich Fahrzeugsicherheit.',
         requirements: [
@@ -123,6 +136,7 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2030-01-01',
         startDate: 'ab sofort',
         weeklyHours: '12 h / Woche',
+        salary: '€ 12,00 brutto/Stunde',
         organization: 'R&D Abteilung',
         description: 'Mitarbeit bei der Entwicklung technischer Design-Tools.',
         requirements: [
@@ -139,12 +153,15 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2030-01-01',
         startDate: 'ab sofort',
         weeklyHours: '38 h / Woche',
+        salary: '€ 3.500,00 brutto/Monat',
         organization: 'Kommunikationsabteilung',
         description: 'Betreuung und Weiterentwicklung der Social-Media-Kanäle.',
         requirements: [
             'Abgeschlossenes Studium im Bereich Marketing, Kommunikation oder ähnlichem',
             'Mehrjährige Erfahrung im Social-Media-Management',
         ],
+        linkName: 'Zum Stelleninserat',
+        linkUrl: 'https://www.example.com/jobs/digital-marketing',
     },
     {
         identifier: 'a1b2c3d4-0009-4000-8000-000000000009',
@@ -155,6 +172,7 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2030-01-01',
         startDate: 'ab sofort',
         weeklyHours: '16 h / Woche',
+        salary: '€ 12,50 brutto/Stunde',
         organization: 'Institut für Wärmetechnik',
         description: 'Unterstützung bei der Digitalisierung von Produktionsprozessen.',
         requirements: [
@@ -171,6 +189,7 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2030-01-01',
         startDate: 'ab sofort',
         weeklyHours: '40 h / Woche',
+        salary: '€ 3.277,30 brutto/Monat',
         organization: 'Institut für Halbleitertechnik',
         description: 'Forschung und Lehre im Bereich Halbleitertechnik.',
         requirements: [
@@ -187,6 +206,7 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2030-01-01',
         startDate: 'ab sofort',
         weeklyHours: '6 h / Woche',
+        salary: '€ 12,00 brutto/Stunde',
         organization: 'Bauplanung GmbH',
         description: 'Projektunterstützung für laufende Bauprojekte.',
         requirements: [
@@ -203,6 +223,7 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2030-03-31',
         startDate: 'ab sofort',
         weeklyHours: '38 h / Woche',
+        salary: '€ 4.200,00 brutto/Monat',
         organization: 'IT-Abteilung',
         description: 'Entwicklung und Wartung von Backend-Systemen.',
         requirements: [
@@ -210,6 +231,8 @@ export const MOCK_JOB_OFFERS = [
             'Kenntnisse in Java, Python oder Go',
             'Erfahrung mit RESTful APIs und Microservices',
         ],
+        linkName: 'Mehr zur Stelle',
+        linkUrl: 'https://www.example.com/jobs/backend-developer',
     },
     {
         identifier: 'a1b2c3d4-0013-4000-8000-000000000013',
@@ -220,6 +243,7 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2030-02-28',
         startDate: 'ab sofort',
         weeklyHours: '40 h / Woche',
+        salary: '€ 3.277,30 brutto/Monat',
         organization: 'Institut für Maschinenbau',
         description: 'Mitarbeit in Forschungsprojekten im Bereich Maschinenbau.',
         requirements: [
@@ -236,6 +260,7 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2026-12-31',
         startDate: 'ab sofort',
         weeklyHours: '20 h / Woche',
+        salary: '€ 1.200,00 brutto/Monat',
         organization: 'Data Science Abteilung',
         description: 'Analyse und Visualisierung großer Datensätze.',
         requirements: [
@@ -252,6 +277,7 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2030-01-01',
         startDate: 'ab sofort',
         weeklyHours: '20 h / Woche',
+        salary: '€ 1.400,00 brutto/Monat',
         organization: 'Kommunikationsabteilung',
         description: 'Unterstützung des Kommunikationsteams in administrativen Aufgaben.',
         requirements: [
@@ -268,6 +294,7 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2030-06-30',
         startDate: 'ab sofort',
         weeklyHours: '15 h / Woche',
+        salary: '€ 13,50 brutto/Stunde',
         organization: 'Institut für Energie- und Umwelttechnik',
         description: 'Mitarbeit in Projekten zur erneuerbaren Energie.',
         requirements: [
@@ -284,6 +311,7 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2030-04-15',
         startDate: 'ab sofort',
         weeklyHours: '38 h / Woche',
+        salary: '€ 4.500,00 brutto/Monat',
         organization: 'AI Research Lab',
         description: 'Entwicklung von Machine-Learning-Modellen für industrielle Anwendungen.',
         requirements: [
@@ -291,6 +319,8 @@ export const MOCK_JOB_OFFERS = [
             'Kenntnisse in Machine Learning und Deep Learning',
             'Erfahrung mit TensorFlow oder PyTorch von Vorteil',
         ],
+        linkName: 'AI Research Lab',
+        linkUrl: 'https://www.example.com/research/ai-lab',
     },
     {
         identifier: 'a1b2c3d4-0018-4000-8000-000000000018',
@@ -301,6 +331,7 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2030-01-01',
         startDate: 'ab sofort',
         weeklyHours: '38 h / Woche',
+        salary: '€ 3.800,00 brutto/Monat',
         organization: 'Institut für Fahrzeugtechnik',
         description: 'Konstruktion und Auslegung von Fahrzeugkomponenten.',
         requirements: [
@@ -317,6 +348,7 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2030-08-31',
         startDate: 'ab sofort',
         weeklyHours: '8 h / Woche',
+        salary: '€ 470,00 brutto/Monat',
         organization: 'Institut für Grundlagen der Elektrotechnik',
         description: 'Betreuung von Übungen und Tutorien in der Grundlagenausbildung.',
         requirements: [
@@ -333,6 +365,7 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2030-01-01',
         startDate: 'ab sofort',
         weeklyHours: '38 h / Woche',
+        salary: '€ 4.100,00 brutto/Monat',
         organization: 'Bauplanung AG',
         description: 'Koordination und Steuerung von Bauprojekten.',
         requirements: [
@@ -349,6 +382,7 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2027-03-31',
         startDate: 'ab sofort',
         weeklyHours: '20 h / Woche',
+        salary: '€ 1.100,00 brutto/Monat',
         organization: 'Institut für Wärmetechnik',
         description: 'Praktische Mitarbeit in thermodynamischen Versuchsprojekten.',
         requirements: [
@@ -365,6 +399,7 @@ export const MOCK_JOB_OFFERS = [
         deadline: '2030-01-01',
         startDate: 'ab sofort',
         weeklyHours: '20 h / Woche',
+        salary: '€ 1.400,00 brutto/Monat',
         organization: 'Marketingabteilung',
         description: 'Erstellung von Content für verschiedene Social-Media-Plattformen.',
         requirements: [
