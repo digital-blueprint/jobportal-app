@@ -603,6 +603,7 @@ class ViewJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
 
             /* Pagination bar */
             .pagination-bar {
+                --pagination-control-height: 40px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -613,7 +614,7 @@ class ViewJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
 
             .page-size-wrapper {
                 display: flex;
-                align-items: baseline;
+                align-items: center;
                 gap: 0.4rem;
             }
 
@@ -625,12 +626,25 @@ class ViewJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
 
             .page-size-wrapper .control select {
                 width: auto;
+                min-height: var(--pagination-control-height);
+                padding: 0 0.5em;
             }
 
             .pagination-buttons {
                 display: flex;
                 align-items: center;
                 gap: 0.25rem;
+            }
+
+            .pagination-buttons .button {
+                height: var(--pagination-control-height);
+                min-height: var(--pagination-control-height);
+                box-sizing: border-box;
+                display: inline-flex;
+                align-items: center;
+                padding-top: 0;
+                padding-bottom: 0;
+                line-height: 1;
             }
 
             .pagination-page {
