@@ -5,6 +5,7 @@ import {ScopedElementsMixin} from '@dbp-toolkit/common/src/scoped/ScopedElements
 import {Icon, IconButton} from '@dbp-toolkit/common';
 import {TabulatorTable} from '@dbp-toolkit/tabulator-table/src/tabulator-table';
 import DBPBulletinLitElement from './dbp-bulletin-lit-element.js';
+import {CreateJobOfferDialog} from './dbp-bulletin-create-job-offer-dialog.js';
 import {MOCK_JOB_OFFERS} from './utils/mock.js';
 
 class ManageJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
@@ -13,6 +14,7 @@ class ManageJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
             'dbp-icon': Icon,
             'dbp-icon-button': IconButton,
             'dbp-tabulator-table': TabulatorTable,
+            'dbp-bulletin-create-job-offer-dialog': CreateJobOfferDialog,
         };
     }
 
@@ -60,6 +62,14 @@ class ManageJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
     /** Placeholder handler for the preview/view action. */
     onPreview(job) {
         console.log('Preview job offer:', job.identifier);
+    }
+
+    /** Opens the create job offer dialog. */
+    _openCreateDialog() {
+        const dialog = this._('dbp-bulletin-create-job-offer-dialog');
+        if (dialog) {
+            dialog.open();
+        }
     }
 
     /**
@@ -172,7 +182,10 @@ class ManageJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
             <div class="manage-board">
                 <!-- Create new job offer button -->
                 <div class="toolbar">
-                    <button class="button is-primary create-btn" type="button">
+                    <button
+                        class="button is-primary create-btn"
+                        type="button"
+                        @click="${this._openCreateDialog}">
                         <dbp-icon class="btn-icon" name="plus" aria-hidden="true"></dbp-icon>
                         ${t('manage-job-offers.create-btn')}
                     </button>
@@ -187,6 +200,15 @@ class ManageJobOffers extends ScopedElementsMixin(DBPBulletinLitElement) {
                     .options="${this._tableOptions}"
                     .data="${this._tableData}"></dbp-tabulator-table>
             </div>
+
+            <!-- Create job offer dialog (separate web component) -->
+            <dbp-bulletin-create-job-offer-dialog
+                lang="${this.lang}"
+                @dbp-job-offer-create="${(e) =>
+                    console.log(
+                        'New job offer:',
+                        e.detail,
+                    )}"></dbp-bulletin-create-job-offer-dialog>
         `;
     }
 
