@@ -89,7 +89,7 @@ export class JobOfferPreviewDialog extends ScopedElementsMixin(DBPBulletinLitEle
                 <div slot="content" class="preview-content">
                     ${job
                         ? html`
-                              <!-- Meta information row -->
+                              <!-- Meta information row: left = key-value fields, right = badge + action buttons -->
                               <div class="meta-row">
                                   <div class="meta-fields">
                                       <p class="meta-item">
@@ -113,47 +113,57 @@ export class JobOfferPreviewDialog extends ScopedElementsMixin(DBPBulletinLitEle
                                           ${job.organization ?? ''}
                                       </p>
                                   </div>
-                                  ${job.areaOfInterest
-                                      ? html`
-                                            <span class="area-badge">${job.areaOfInterest}</span>
-                                        `
-                                      : ''}
-                              </div>
 
-                              <!-- Action buttons -->
-                              <div class="action-buttons">
-                                  <button
-                                      class="button is-secondary action-btn"
-                                      type="button"
-                                      @click="${this._onEdit}">
-                                      <dbp-icon
-                                          class="btn-icon"
-                                          name="pencil"
-                                          aria-hidden="true"></dbp-icon>
-                                      ${t('job-offer-preview.edit')}
-                                  </button>
-                                  <button
-                                      class="button is-secondary action-btn"
-                                      type="button"
-                                      @click="${() =>
-                                          console.log('Delete job offer:', job.identifier)}">
-                                      <dbp-icon
-                                          class="btn-icon"
-                                          name="trash"
-                                          aria-hidden="true"></dbp-icon>
-                                      ${t('job-offer-preview.delete')}
-                                  </button>
-                                  <button
-                                      class="button is-primary action-btn"
-                                      type="button"
-                                      @click="${() =>
-                                          console.log('View applications for:', job.identifier)}">
-                                      <dbp-icon
-                                          class="btn-icon"
-                                          name="person"
-                                          aria-hidden="true"></dbp-icon>
-                                      ${t('job-offer-preview.view-applications')}
-                                  </button>
+                                  <!-- Right column: area badge at top, action buttons at bottom -->
+                                  <div class="meta-right">
+                                      ${job.areaOfInterest
+                                          ? html`
+                                                <span class="area-badge">
+                                                    ${job.areaOfInterest}
+                                                </span>
+                                            `
+                                          : ''}
+                                      <div class="action-buttons">
+                                          <button
+                                              class="button is-secondary action-btn"
+                                              type="button"
+                                              @click="${this._onEdit}">
+                                              <dbp-icon
+                                                  class="btn-icon"
+                                                  name="pencil"
+                                                  aria-hidden="true"></dbp-icon>
+                                              ${t('job-offer-preview.edit')}
+                                          </button>
+                                          <button
+                                              class="button is-secondary action-btn"
+                                              type="button"
+                                              @click="${() =>
+                                                  console.log(
+                                                      'Delete job offer:',
+                                                      job.identifier,
+                                                  )}">
+                                              <dbp-icon
+                                                  class="btn-icon"
+                                                  name="trash"
+                                                  aria-hidden="true"></dbp-icon>
+                                              ${t('job-offer-preview.delete')}
+                                          </button>
+                                          <button
+                                              class="button is-primary action-btn"
+                                              type="button"
+                                              @click="${() =>
+                                                  console.log(
+                                                      'View applications for:',
+                                                      job.identifier,
+                                                  )}">
+                                              <dbp-icon
+                                                  class="btn-icon"
+                                                  name="users"
+                                                  aria-hidden="true"></dbp-icon>
+                                              ${t('job-offer-preview.view-applications')}
+                                          </button>
+                                      </div>
+                                  </div>
                               </div>
 
                               <!-- Description -->
@@ -219,12 +229,12 @@ export class JobOfferPreviewDialog extends ScopedElementsMixin(DBPBulletinLitEle
                 gap: 1rem;
             }
 
-            /* Top meta row: left = key-value list, right = area badge */
+            /* Top meta row: left = key-value list, right = badge + buttons */
             .meta-row {
                 display: flex;
                 justify-content: space-between;
                 align-items: flex-start;
-                gap: 1rem;
+                gap: 1.5rem;
             }
 
             .meta-fields {
@@ -236,6 +246,16 @@ export class JobOfferPreviewDialog extends ScopedElementsMixin(DBPBulletinLitEle
             .meta-item {
                 margin: 0;
                 font-size: 0.95rem;
+            }
+
+            /* Right column: badge pinned to top, buttons pushed to bottom */
+            .meta-right {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                justify-content: space-between;
+                gap: 1rem;
+                flex-shrink: 0;
             }
 
             /* Area-of-interest badge */
@@ -253,6 +273,7 @@ export class JobOfferPreviewDialog extends ScopedElementsMixin(DBPBulletinLitEle
                 display: flex;
                 gap: 0.75rem;
                 flex-wrap: wrap;
+                justify-content: flex-end;
             }
 
             .action-btn {
