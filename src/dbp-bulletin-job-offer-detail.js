@@ -89,7 +89,10 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
      */
     shareOnFacebook() {
         const url = this.getShareUrl();
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+        window.open(
+            `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+            '_blank',
+        );
     }
 
     /**
@@ -97,7 +100,10 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
      */
     shareOnLinkedIn() {
         const url = this.getShareUrl();
-        window.open(`https://www.linkedin.com/sharing/share-offline?url=${encodeURIComponent(url)}`, '_blank');
+        window.open(
+            `https://www.linkedin.com/sharing/share-offline?url=${encodeURIComponent(url)}`,
+            '_blank',
+        );
     }
 
     /**
@@ -107,7 +113,10 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
         const url = this.getShareUrl();
         const subject = this.job.title;
         const body = this.job.description.slice(0, 100) + '\n\n' + url;
-        window.open(`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, '_self');
+        window.open(
+            `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
+            '_self',
+        );
     }
 
     /**
@@ -142,7 +151,6 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
         }
         this._shareDropdownOpen = false;
     }
-
 
     /**
      * Handles the application form submission.

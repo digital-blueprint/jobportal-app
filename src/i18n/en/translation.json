@@ -12,8 +12,8 @@
         "published-at": "Published on",
         "requirements": "Requirements",
         "share": "Share job",
-        "share-copy": "Copy Link",
         "share-copied": "Link copied to clipboard!",
+        "share-copy": "Copy Link",
         "share-email": "Send via Email",
         "share-facebook": "Share on Facebook",
         "share-linkedin": "Share on LinkedIn",
@@ -81,15 +81,5 @@
         "sort-date-asc": "Date ↑",
         "sort-date-desc": "Date ↓",
         "view-details": "View"
-    },
-    "share-modal": {
-        "title": "Share Job Offer",
-        "description": "Choose how you want to share this job offer:",
-        "twitter": "Twitter",
-        "facebook": "Facebook",
-        "linkedin": "LinkedIn",
-        "email": "Email",
-        "copy": "Copy Link",
-        "copied": "Link copied to clipboard!"
     }
 }
