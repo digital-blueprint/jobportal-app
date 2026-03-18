@@ -19,6 +19,8 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
         this._email = '';
         /** @type {string} Free-text message entered in the application form */
         this._message = '';
+        /** @type {boolean} Whether the share dropdown is open */
+        this._shareDropdownOpen = false;
     }
 
     static get scopedElements() {
@@ -37,6 +39,7 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
             _lastName: {state: true},
             _email: {state: true},
             _message: {state: true},
+            _shareDropdownOpen: {state: true},
         };
     }
 
@@ -67,19 +70,79 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
     }
 
     /**
-     * Handles the share button — writes the canonical job URL to the clipboard.
+     * Handles the share button — toggles the share dropdown.
      */
-    async onShare() {
-        const job = this.job;
-        if (!job) return;
-        const url = `${window.location.origin}${window.location.pathname}#job/${job.identifier}`;
+    onShare() {
+        this._shareDropdownOpen = !this._shareDropdownOpen;
+    }
+
+    /**
+     * Returns the canonical URL for sharing the job offer.
+     * @returns {string}
+     */
+    getShareUrl() {
+        return `${window.location.origin}${window.location.pathname}#job/${this.job.identifier}`;
+    }
+
+    /**
+     * Shares the job offer on Facebook.
+     */
+    shareOnFacebook() {
+        const url = this.getShareUrl();
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+    }
+
+    /**
+     * Shares the job offer on LinkedIn.
+     */
+    shareOnLinkedIn() {
+        const url = this.getShareUrl();
+        window.open(`https://www.linkedin.com/sharing/share-offline?url=${encodeURIComponent(url)}`, '_blank');
+    }
+
+    /**
+     * Shares the job offer via email.
+     */
+    shareViaEmail() {
+        const url = this.getShareUrl();
+        const subject = this.job.title;
+        const body = this.job.description.slice(0, 100) + '\n\n' + url;
+        window.open(`mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, '_self');
+    }
+
+    /**
+     * Shares the job offer on WhatsApp.
+     */
+    shareOnWhatsApp() {
+        const url = this.getShareUrl();
+        const text = this.job.title + ' - ' + this.job.description.slice(0, 100);
+        window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
+    }
+
+    /**
+     * Shares the job offer on Xing.
+     */
+    shareOnXing() {
+        const url = this.getShareUrl();
+        window.open(`https://www.xing.com/spi/shares/new?url=${encodeURIComponent(url)}`, '_blank');
+    }
+
+    /**
+     * Copies the job offer URL to the clipboard.
+     */
+    async shareCopy() {
+        const url = this.getShareUrl();
+        const i18n = this._i18n;
+        const t = (key) => (i18n ? i18n.t(key) : key);
         try {
             await navigator.clipboard.writeText(url);
+            alert(t('job-offer-detail.share-copied'));
         } catch {
-            // Fallback: open the URL in a new tab if clipboard access is denied
             window.open(url, '_blank');
         }
+        this._shareDropdownOpen = false;
     }
+
 
     /**
      * Handles the application form submission.
@@ -153,16 +216,78 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
                                   <div class="meta-actions">
                                       <span class="job-tag">${job.areaOfInterest}</span>
                                       <div class="action-buttons">
-                                          <button
-                                              class="button is-secondary"
-                                              type="button"
-                                              @click="${this.onShare}">
-                                              <dbp-icon
-                                                  class="btn-icon"
-                                                  name="share2"
-                                                  aria-hidden="true"></dbp-icon>
-                                              ${t('job-offer-detail.share')}
-                                          </button>
+                                          <div class="share-button-container">
+                                              <button
+                                                  class="button is-secondary"
+                                                  type="button"
+                                                  @click="${this.onShare}">
+                                                  <dbp-icon
+                                                      class="btn-icon"
+                                                      name="share2"
+                                                      aria-hidden="true"></dbp-icon>
+                                                  ${t('job-offer-detail.share')}
+                                              </button>
+                                              ${this._shareDropdownOpen
+                                                  ? html`
+                                                        <div class="share-dropdown">
+                                                            <button
+                                                                class="button"
+                                                                @click="${this.shareCopy}">
+                                                                <dbp-icon
+                                                                    name="link"
+                                                                    class="btn-icon"></dbp-icon>
+                                                                ${t('job-offer-detail.share-copy')}
+                                                            </button>
+                                                            <button
+                                                                class="button"
+                                                                @click="${this.shareViaEmail}">
+                                                                <dbp-icon
+                                                                    name="envelope"
+                                                                    class="btn-icon"></dbp-icon>
+                                                                ${t('job-offer-detail.share-email')}
+                                                            </button>
+                                                            <button
+                                                                class="button"
+                                                                @click="${this.shareOnWhatsApp}">
+                                                                <dbp-icon
+                                                                    name="whatsapp"
+                                                                    class="btn-icon"></dbp-icon>
+                                                                ${t(
+                                                                    'job-offer-detail.share-whatsapp',
+                                                                )}
+                                                            </button>
+                                                            <button
+                                                                class="button"
+                                                                @click="${this.shareOnLinkedIn}">
+                                                                <dbp-icon
+                                                                    name="linkedin-original"
+                                                                    class="btn-icon"></dbp-icon>
+                                                                ${t(
+                                                                    'job-offer-detail.share-linkedin',
+                                                                )}
+                                                            </button>
+                                                            <button
+                                                                class="button"
+                                                                @click="${this.shareOnFacebook}">
+                                                                <dbp-icon
+                                                                    name="facebook"
+                                                                    class="btn-icon"></dbp-icon>
+                                                                ${t(
+                                                                    'job-offer-detail.share-facebook',
+                                                                )}
+                                                            </button>
+                                                            <button
+                                                                class="button"
+                                                                @click="${this.shareOnXing}">
+                                                                <dbp-icon
+                                                                    name="share2"
+                                                                    class="btn-icon"></dbp-icon>
+                                                                ${t('job-offer-detail.share-xing')}
+                                                            </button>
+                                                        </div>
+                                                    `
+                                                  : ''}
+                                          </div>
                                           <button
                                               class="button is-primary apply-anchor-btn"
                                               type="button"
@@ -421,6 +546,40 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
                 .meta-actions {
                     align-items: flex-start;
                 }
+            }
+
+            /* Share dropdown styles */
+            .share-dropdown {
+                position: absolute;
+                top: 100%;
+                right: 0;
+                background: white;
+                border: 1px solid var(--dbp-border);
+                border-radius: var(--dbp-border-radius);
+                box-shadow:
+                    rgba(0, 0, 0, 0.08) 0px 6px 24px,
+                    rgba(0, 0, 0, 0.06) 0px 2px 8px;
+                z-index: 10;
+                display: flex;
+                flex-direction: column;
+                gap: 0px;
+                padding: 0px;
+                width: max-content;
+            }
+
+            .share-dropdown .button {
+                justify-content: flex-start;
+                border: none;
+                padding: 10px 10px;
+                gap: 10px;
+            }
+
+            .share-button-container {
+                position: relative;
+            }
+            .share-button-container button {
+                position: relative;
+                z-index: 11;
             }
         `;
     }
