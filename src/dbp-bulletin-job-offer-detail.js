@@ -1,6 +1,7 @@
 import {css, html} from 'lit';
 import {ScopedElementsMixin} from '@dbp-toolkit/common/src/scoped/ScopedElementsMixin.js';
 import {Modal, Icon} from '@dbp-toolkit/common';
+import {DbpStringElement} from '@dbp-toolkit/form-elements';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/src/styles.js';
 import DBPBulletinLitElement from './dbp-bulletin-lit-element.js';
@@ -24,6 +25,7 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
         return {
             'dbp-modal': Modal,
             'dbp-icon': Icon,
+            'dbp-string-element': DbpStringElement,
         };
     }
 
@@ -207,80 +209,48 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
                                   </h4>
 
                                   <div class="form-row">
-                                      <div class="field">
-                                          <label class="label" for="apply-first-name">
-                                              ${t('job-offer-detail.first-name')}
-                                              <span class="required-mark" aria-hidden="true">
-                                                  *
-                                              </span>
-                                          </label>
-                                          <div class="control">
-                                              <input
-                                                  id="apply-first-name"
-                                                  class="input"
-                                                  type="text"
-                                                  required
-                                                  .value="${this._firstName}"
-                                                  @input="${(e) =>
-                                                      (this._firstName = e.target.value)}"
-                                                  autocomplete="given-name" />
-                                          </div>
-                                      </div>
+                                      <dbp-string-element
+                                          name="first-name"
+                                          lang="${this.lang}"
+                                          label="${t('job-offer-detail.first-name')}"
+                                          .value="${this._firstName}"
+                                          required
+                                          autocomplete="given-name"
+                                          @change="${(e) =>
+                                              (this._firstName =
+                                                  e.detail.value)}"></dbp-string-element>
 
-                                      <div class="field">
-                                          <label class="label" for="apply-last-name">
-                                              ${t('job-offer-detail.last-name')}
-                                              <span class="required-mark" aria-hidden="true">
-                                                  *
-                                              </span>
-                                          </label>
-                                          <div class="control">
-                                              <input
-                                                  id="apply-last-name"
-                                                  class="input"
-                                                  type="text"
-                                                  required
-                                                  .value="${this._lastName}"
-                                                  @input="${(e) =>
-                                                      (this._lastName = e.target.value)}"
-                                                  autocomplete="family-name" />
-                                          </div>
-                                      </div>
+                                      <dbp-string-element
+                                          name="last-name"
+                                          lang="${this.lang}"
+                                          label="${t('job-offer-detail.last-name')}"
+                                          .value="${this._lastName}"
+                                          required
+                                          autocomplete="family-name"
+                                          @change="${(e) =>
+                                              (this._lastName =
+                                                  e.detail.value)}"></dbp-string-element>
 
-                                      <div class="field">
-                                          <label class="label" for="apply-email">
-                                              ${t('job-offer-detail.email')}
-                                              <span class="required-mark" aria-hidden="true">
-                                                  *
-                                              </span>
-                                          </label>
-                                          <div class="control">
-                                              <input
-                                                  id="apply-email"
-                                                  class="input"
-                                                  type="email"
-                                                  required
-                                                  .value="${this._email}"
-                                                  @input="${(e) => (this._email = e.target.value)}"
-                                                  autocomplete="email" />
-                                          </div>
-                                      </div>
+                                      <dbp-string-element
+                                          name="email"
+                                          lang="${this.lang}"
+                                          label="${t('job-offer-detail.email')}"
+                                          .value="${this._email}"
+                                          type="email"
+                                          required
+                                          autocomplete="email"
+                                          @change="${(e) =>
+                                              (this._email = e.detail.value)}"></dbp-string-element>
                                   </div>
 
-                                  <div class="field">
-                                      <label class="label" for="apply-message">
-                                          ${t('job-offer-detail.message')}
-                                      </label>
-                                      <div class="control">
-                                          <textarea
-                                              id="apply-message"
-                                              class="textarea"
-                                              rows="4"
-                                              .value="${this._message}"
-                                              @input="${(e) =>
-                                                  (this._message = e.target.value)}"></textarea>
-                                      </div>
-                                  </div>
+                                  <dbp-string-element
+                                      name="message"
+                                      lang="${this.lang}"
+                                      label="${t('job-offer-detail.message')}"
+                                      .value="${this._message}"
+                                      rows="4"
+                                      @change="${(e) =>
+                                          (this._message = e.detail.value)}"></dbp-string-element>
 
                                   <div class="form-footer">
                                       <button class="button is-primary" type="submit">
@@ -422,39 +392,20 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
                 }
             }
 
-            .form-row .field {
+            .form-row dbp-string-element {
                 margin-bottom: 0;
             }
 
-            .required-mark {
-                color: var(--dbp-danger, #e53935);
-                margin-left: 0.1rem;
+            /* Vertical spacing for the message element */
+            .apply-form dbp-string-element {
+                display: block;
+                margin-bottom: 0.75rem;
             }
 
             .form-footer {
                 display: flex;
                 justify-content: flex-end;
                 margin-top: 1rem;
-            }
-
-            /* Textarea inherits input styling */
-            .textarea {
-                width: 100%;
-                resize: vertical;
-                min-height: 6rem;
-                font-family: inherit;
-                font-size: inherit;
-                padding: 0.5rem 0.75rem;
-                border: var(--dbp-border);
-                border-radius: var(--dbp-border-radius);
-                background: var(--dbp-background);
-                color: var(--dbp-content);
-                box-sizing: border-box;
-            }
-
-            .textarea:focus {
-                outline: none;
-                border-color: var(--dbp-accent);
             }
 
             /* Detail content padding */
