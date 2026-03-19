@@ -1,3 +1,6 @@
 [submodule "vendor/toolkit"]
 	path = vendor/toolkit
 	url = https://github.com/digital-blueprint/toolkit
+[submodule "vendor/formalize"]
+	path = vendor/formalize
+	url = https://github.com/digital-blueprint/formalize-app
