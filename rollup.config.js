@@ -82,6 +82,7 @@ if (devConfig != undefined && appEnv in devConfig) {
     config = {
         basePath: '/',
         entryPointURL: 'https://test',
+        jobOfferFormId: '7432af11-6f1c-45ee-8aa3-e90b3395e29c',
         keyCloakBaseURL: 'https://test',
         keyCloakClientId: '',
         keyCloakRealm: '',
@@ -168,6 +169,7 @@ export default (async () => {
                         },
                         name: appName,
                         entryPointURL: config.entryPointURL,
+                        jobOfferFormId: config.jobOfferFormId,
                         basePath: config.basePath,
                         keyCloakBaseURL: config.keyCloakBaseURL,
                         keyCloakRealm: config.keyCloakRealm,
@@ -198,6 +200,7 @@ export default (async () => {
                         },
                         name: appName,
                         entryPointURL: config.entryPointURL,
+                        jobOfferFormId: config.jobOfferFormId,
                         basePath: config.basePath,
                         keyCloakBaseURL: config.keyCloakBaseURL,
                         keyCloakRealm: config.keyCloakRealm,

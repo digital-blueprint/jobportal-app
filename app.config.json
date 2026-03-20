@@ -2,6 +2,7 @@
     "local": {
         "basePath": "/dist/",
         "entryPointURL": "http://127.0.0.1:8000",
+        "jobOfferFormId": "7432af11-6f1c-45ee-8aa3-e90b3395e29c",
         "keyCloakBaseURL": "",
         "keyCloakRealm": "",
         "keyCloakClientId": "",
