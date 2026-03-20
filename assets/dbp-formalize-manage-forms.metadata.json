@@ -1,18 +1,18 @@
 {
     "element": "dbp-formalize-manage-forms",
     "module_src": "dbp-formalize-manage-forms.js",
-    "routing_name": "view-job-offers-formalize",
+    "routing_name": "manage-job-offers",
     "name": {
-        "de": "Stellenangebote anzeigen",
-        "en": "View job offers"
+        "de": "Stellenangebote verwalten",
+        "en": "Manage job offers"
     },
     "short_name": {
-        "de": "Stellenangebote anzeigen",
-        "en": "View job offers"
+        "de": "Stellenangebote verwalten",
+        "en": "Manage job offers"
     },
     "description": {
-        "de": "Zeigt eine Liste aller verfügbaren Stellenangebote",
-        "en": "Shows a list of available job offers"
+        "de": "Ermöglicht das Verwalten von Stellenangeboten",
+        "en": "Enables managing job offers"
     },
     "subscribe": "lang,entry-point-url,auth,html-overrides,base-path,routing-url"
 }
