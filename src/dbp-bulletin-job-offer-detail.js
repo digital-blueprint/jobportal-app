@@ -5,6 +5,8 @@ import {DbpStringElement} from '@dbp-toolkit/form-elements';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/src/styles.js';
 import DBPBulletinLitElement from './dbp-bulletin-lit-element.js';
+import {sendNotification} from '@dbp-toolkit/common';
+import {Notification} from '@dbp-toolkit/notification';
 
 export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
     constructor() {
@@ -28,6 +30,7 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
             'dbp-modal': Modal,
             'dbp-icon': Icon,
             'dbp-string-element': DbpStringElement,
+            'dbp-notification': Notification,
         };
     }
 
@@ -70,10 +73,30 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
     }
 
     /**
-     * Handles the share button — toggles the share dropdown.
+     * Handles the share button — uses native share if available, otherwise toggles the custom share dropdown.
      */
-    onShare() {
-        this._shareDropdownOpen = !this._shareDropdownOpen;
+    async onShare() {
+        if ('share' in navigator) {
+            try {
+                await navigator.share({
+                    title: this.job.title,
+                    text: this.job.description.slice(0, 100),
+                    url: this.getShareUrl(),
+                });
+            } catch (error) {
+                if (error.name !== 'AbortError') {
+                    console.error('Error:', error);
+                    sendNotification({
+                        summary: this._i18n.t('job-offer-detail.notification.error-heading'),
+                        body: this._i18n.t('job-offer-detail.notification.error-body'),
+                        type: 'danger',
+                        timeout: 0,
+                    });
+                }
+            }
+        } else {
+            this._shareDropdownOpen = !this._shareDropdownOpen;
+        }
     }
 
     /**
@@ -81,7 +104,7 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
      * @returns {string}
      */
     getShareUrl() {
-        return `${window.location.origin}${window.location.pathname}#job/${this.job.identifier}`;
+        return `${window.location.origin}${window.location.pathname}`;
     }
 
     /**
@@ -112,7 +135,7 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
     shareViaEmail() {
         const url = this.getShareUrl();
         const subject = this.job.title;
-        const body = this.job.description.slice(0, 100) + '\n\n' + url;
+        const body = this.job.title + '\n\n' + this.job.description.slice(0, 100) + '\n\n' + url;
         window.open(
             `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
             '_self',
@@ -137,7 +160,7 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
     }
 
     /**
-     * Copies the job offer URL to the clipboard.
+     * Shares the job offer using copying the URL.
      */
     async shareCopy() {
         const url = this.getShareUrl();
@@ -145,10 +168,19 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
         const t = (key) => (i18n ? i18n.t(key) : key);
         try {
             await navigator.clipboard.writeText(url);
-            alert(t('job-offer-detail.share-copied'));
+            sendNotification({
+                summary: t('job-offer-detail.notification.success-heading'),
+                body: t('job-offer-detail.notification.success-body'),
+                icon: 'checkmark',
+                type: 'success',
+                replaceId: 'dbp-notification-copy',
+                targetNotificationId: 'dbp-notification-123',
+                timeout: 5,
+            });
         } catch {
             window.open(url, '_blank');
         }
+
         this._shareDropdownOpen = false;
     }
 
@@ -181,17 +213,18 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
         const job = this.job;
         const i18n = this._i18n;
         const t = (key) => (i18n ? i18n.t(key) : key);
-
         return html`
             <dbp-modal
                 modal-id="job-offer-detail-dialog"
                 lang="${this.lang}"
                 style="--dbp-modal-min-width: min(95vw, 700px); --dbp-modal-max-width: min(95vw, 700px); --dbp-modal-max-height: 90vh; --dbp-modal-content-overflow-y: auto;">
+                <div slot="header">
+                    <dbp-notification id="dbp-notification-123" lang="en" inline></dbp-notification>
+                </div>
                 <!-- Title slot -->
                 <div slot="title">
-                    <h3 class="modal-title">${job ? job.title : ''}</h3>
+                    <h2 class="modal-title">${job ? job.title : ''}</h2>
                 </div>
-
                 <!-- Main content slot — empty when no job is selected -->
                 <div slot="content" class="detail-content">
                     ${job
@@ -243,6 +276,7 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
                                                                 @click="${this.shareCopy}">
                                                                 <dbp-icon
                                                                     name="link"
+                                                                    aria-hidden="true"
                                                                     class="btn-icon"></dbp-icon>
                                                                 ${t('job-offer-detail.share-copy')}
                                                             </button>
@@ -251,6 +285,7 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
                                                                 @click="${this.shareViaEmail}">
                                                                 <dbp-icon
                                                                     name="envelope"
+                                                                    aria-hidden="true"
                                                                     class="btn-icon"></dbp-icon>
                                                                 ${t('job-offer-detail.share-email')}
                                                             </button>
@@ -259,6 +294,7 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
                                                                 @click="${this.shareOnWhatsApp}">
                                                                 <dbp-icon
                                                                     name="whatsapp"
+                                                                    aria-hidden="true"
                                                                     class="btn-icon"></dbp-icon>
                                                                 ${t(
                                                                     'job-offer-detail.share-whatsapp',
@@ -269,6 +305,7 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
                                                                 @click="${this.shareOnLinkedIn}">
                                                                 <dbp-icon
                                                                     name="linkedin-original"
+                                                                    aria-hidden="true"
                                                                     class="btn-icon"></dbp-icon>
                                                                 ${t(
                                                                     'job-offer-detail.share-linkedin',
@@ -279,6 +316,7 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
                                                                 @click="${this.shareOnFacebook}">
                                                                 <dbp-icon
                                                                     name="facebook"
+                                                                    aria-hidden="true"
                                                                     class="btn-icon"></dbp-icon>
                                                                 ${t(
                                                                     'job-offer-detail.share-facebook',
@@ -289,6 +327,7 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
                                                                 @click="${this.shareOnXing}">
                                                                 <dbp-icon
                                                                     name="share2"
+                                                                    aria-hidden="true"
                                                                     class="btn-icon"></dbp-icon>
                                                                 ${t('job-offer-detail.share-xing')}
                                                             </button>
@@ -554,6 +593,10 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
                 .meta-actions {
                     align-items: flex-start;
                 }
+                .share-dropdown {
+                    left: 0;
+                    right: initial;
+                }
             }
 
             /* Share dropdown styles */
@@ -570,7 +613,7 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
                 z-index: 10;
                 display: flex;
                 flex-direction: column;
-                gap: 0px;
+                gap: 3px;
                 padding: 0px;
                 width: max-content;
             }

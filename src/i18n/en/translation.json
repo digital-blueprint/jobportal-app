@@ -8,11 +8,16 @@
         "first-name": "First name",
         "last-name": "Last name",
         "message": "Free text",
+        "notification": {
+            "error-body": "An error occurred while copying the link. Please try copying it manually or share the link using the other available options.",
+            "error-heading": "Error",
+            "success-body": "The link was successfully copied to your clipboard.",
+            "success-heading": "Success"
+        },
         "organization": "Organisation",
         "published-at": "Published on",
         "requirements": "Requirements",
         "share": "Share job",
-        "share-copied": "Link copied to clipboard!",
         "share-copy": "Copy Link",
         "share-email": "Send via Email",
         "share-facebook": "Share on Facebook",

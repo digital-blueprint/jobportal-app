@@ -8,11 +8,16 @@
         "first-name": "Vorname",
         "last-name": "Nachname",
         "message": "Freitextfeld",
+        "notification": {
+            "error-body": "Beim Kopieren des Links ist ein Fehler aufgetreten. Bitte versuchen Sie es manuell oder teilen Sie die Stelle über die anderen verfügbaren Optionen.",
+            "error-heading": "Fehler",
+            "success-body": "Der Link wurde erfolgreich in Ihre Zwischenablage kopiert.",
+            "success-heading": "Erfolgreich"
+        },
         "organization": "Organisation",
         "published-at": "Veröffentlicht am",
         "requirements": "Anforderungen",
         "share": "Stelle teilen",
-        "share-copied": "Link in die Zwischenablage kopiert!",
         "share-copy": "Link kopieren",
         "share-email": "Per Mail versenden",
         "share-facebook": "Auf Facebook teilen",
