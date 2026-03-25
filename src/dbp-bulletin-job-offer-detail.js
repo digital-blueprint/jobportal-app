@@ -106,62 +106,7 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
     getShareUrl() {
         return `${window.location.origin}${window.location.pathname}`;
     }
-
-    /**
-     * Shares the job offer on Facebook.
-     */
-    shareOnFacebook() {
-        const url = this.getShareUrl();
-        window.open(
-            `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-            '_blank',
-        );
-    }
-
-    /**
-     * Shares the job offer on LinkedIn.
-     */
-    shareOnLinkedIn() {
-        const url = this.getShareUrl();
-        window.open(
-            `https://www.linkedin.com/sharing/share-offline?url=${encodeURIComponent(url)}`,
-            '_blank',
-        );
-    }
-
-    /**
-     * Shares the job offer via email.
-     */
-    shareViaEmail() {
-        const url = this.getShareUrl();
-        const subject = this.job.title;
-        const body = this.job.title + '\n\n' + this.job.description.slice(0, 100) + '\n\n' + url;
-        window.open(
-            `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
-            '_self',
-        );
-    }
-
-    /**
-     * Shares the job offer on WhatsApp.
-     */
-    shareOnWhatsApp() {
-        const url = this.getShareUrl();
-        const text = this.job.title + ' - ' + this.job.description.slice(0, 100);
-        window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
-    }
-
-    /**
-     * Shares the job offer on Xing.
-     */
-    shareOnXing() {
-        const url = this.getShareUrl();
-        window.open(`https://www.xing.com/spi/shares/new?url=${encodeURIComponent(url)}`, '_blank');
-    }
-
-    /**
-     * Shares the job offer using copying the URL.
-     */
+    // Shares the job offer using copying the URL.
     async shareCopy() {
         const url = this.getShareUrl();
         const i18n = this._i18n;
@@ -174,16 +119,53 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
                 icon: 'checkmark',
                 type: 'success',
                 replaceId: 'dbp-notification-copy',
-                targetNotificationId: 'dbp-notification-123',
+                targetNotificationId: 'dbp-notification-copy',
                 timeout: 5,
             });
         } catch {
             window.open(url, '_blank');
         }
-
         this._shareDropdownOpen = false;
     }
-
+    // Shares the job offer via email
+    shareViaEmail() {
+        const url = this.getShareUrl();
+        const subject = this.job.title;
+        const body = this.job.title + '\n\n' + this.job.description.slice(0, 100) + '\n\n' + url;
+        window.open(
+            `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
+            '_self',
+        );
+    }
+    // Shares the job offer on WhatsApp.
+    shareOnWhatsApp() {
+        const url = this.getShareUrl();
+        const text = this.job.title + '\n' + this.job.description.slice(0, 100) + '\n';
+        window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
+    }
+    /*
+     // Shares the job offer on Facebook.
+    shareOnFacebook() {
+        const url = this.getShareUrl();
+        window.open(
+            `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+            '_blank',
+        );
+    }
+    // Shares the job offer on LinkedIn.
+    shareOnLinkedIn() {
+        const url = this.getShareUrl();
+        window.open(
+            `https://www.linkedin.com/sharing/share-offline?url=${encodeURIComponent(url)}"`,
+            '_blank',
+        );
+    }
+     // Shares the job offer on Xing.
+    shareOnXing() {
+        const url = this.getShareUrl();
+        window.open(`https://www.xing.com/spi/shares/new?url=${encodeURIComponent(url)}`, '_blank');
+    }
+    */
     /**
      * Handles the application form submission.
      * @param {Event} e
@@ -219,7 +201,10 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
                 lang="${this.lang}"
                 style="--dbp-modal-min-width: min(95vw, 700px); --dbp-modal-max-width: min(95vw, 700px); --dbp-modal-max-height: 90vh; --dbp-modal-content-overflow-y: auto;">
                 <div slot="header">
-                    <dbp-notification id="dbp-notification-123" lang="en" inline></dbp-notification>
+                    <dbp-notification
+                        id="dbp-notification-copy"
+                        lang="en"
+                        inline></dbp-notification>
                 </div>
                 <!-- Title slot -->
                 <div slot="title">
@@ -300,6 +285,7 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
                                                                     'job-offer-detail.share-whatsapp',
                                                                 )}
                                                             </button>
+                                                            <!--
                                                             <button
                                                                 class="button"
                                                                 @click="${this.shareOnLinkedIn}">
@@ -308,8 +294,8 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
                                                                     aria-hidden="true"
                                                                     class="btn-icon"></dbp-icon>
                                                                 ${t(
-                                                                    'job-offer-detail.share-linkedin',
-                                                                )}
+                                                                'job-offer-detail.share-linkedin',
+                                                            )}
                                                             </button>
                                                             <button
                                                                 class="button"
@@ -319,8 +305,8 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
                                                                     aria-hidden="true"
                                                                     class="btn-icon"></dbp-icon>
                                                                 ${t(
-                                                                    'job-offer-detail.share-facebook',
-                                                                )}
+                                                                'job-offer-detail.share-facebook',
+                                                            )}
                                                             </button>
                                                             <button
                                                                 class="button"
@@ -330,7 +316,7 @@ export class JobOfferDetail extends ScopedElementsMixin(DBPBulletinLitElement) {
                                                                     aria-hidden="true"
                                                                     class="btn-icon"></dbp-icon>
                                                                 ${t('job-offer-detail.share-xing')}
-                                                            </button>
+                                                            </button>-->
                                                         </div>
                                                     `
                                                   : ''}
