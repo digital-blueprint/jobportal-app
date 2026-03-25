@@ -1,0 +1,5 @@
+{
+    "forms": {
+        "job-offer-form": "./jobOfferForm.js"
+    }
+}
