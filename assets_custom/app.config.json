@@ -2,7 +2,7 @@
     "test": {
         "basePath": "/",
         "entryPointURL": "http://test",
-        "jobOfferFormId": "7432af11-6f1c-45ee-8aa3-e90b3395e29c",
+        "jobOfferFrontendKey": "job-offer",
         "keyCloakBaseURL": "https://test",
         "keyCloakRealm": "",
         "keyCloakClientId": "",
@@ -14,7 +14,7 @@
     "local": {
         "basePath": "/dist/",
         "entryPointURL": "http://127.0.0.1:8000",
-        "jobOfferFormId": "7432af11-6f1c-45ee-8aa3-e90b3395e29c",
+        "jobOfferFrontendKey": "job-offer",
         "keyCloakBaseURL": "https://auth-dev.tugraz.at/auth",
         "keyCloakRealm": "tugraz-vpu",
         "keyCloakClientId": "auth-dev-mw-frontend-local",
@@ -28,7 +28,7 @@
     "localCustom": {
         "basePath": "/dist/",
         "entryPointURL": "http://127.0.0.1:8000",
-        "jobOfferFormId": "7432af11-6f1c-45ee-8aa3-e90b3395e29c",
+        "jobOfferFrontendKey": "job-offer",
         "keyCloakBaseURL": "https://auth-dev.tugraz.at/auth",
         "keyCloakRealm": "tugraz-vpu",
         "keyCloakClientId": "auth-dev-mw-frontend-local",
@@ -42,7 +42,7 @@
     "development": {
         "basePath": "/apps/bulletin/",
         "entryPointURL": "https://api-dev.tugraz.at",
-        "jobOfferFormId": "7432af11-6f1c-45ee-8aa3-e90b3395e29c",
+        "jobOfferFrontendKey": "job-offer",
         "keyCloakBaseURL": "https://auth-dev.tugraz.at/auth",
         "keyCloakRealm": "tugraz-vpu",
         "keyCloakClientId": "dbp-bulletin",
@@ -56,7 +56,7 @@
     "developmentCustom": {
         "basePath": "/tugapps/bulletin/",
         "entryPointURL": "https://api-dev.tugraz.at",
-        "jobOfferFormId": "7432af11-6f1c-45ee-8aa3-e90b3395e29c",
+        "jobOfferFrontendKey": "job-offer",
         "keyCloakBaseURL": "https://auth-dev.tugraz.at/auth",
         "keyCloakRealm": "tugraz-vpu",
         "keyCloakClientId": "dbp-bulletin",
@@ -70,7 +70,7 @@
     "demo": {
         "basePath": "/apps/bulletin/",
         "entryPointURL": "https://api-demo.tugraz.at",
-        "jobOfferFormId": "7432af11-6f1c-45ee-8aa3-e90b3395e29c",
+        "jobOfferFrontendKey": "job-offer",
         "keyCloakBaseURL": "https://auth-demo.tugraz.at/auth",
         "keyCloakRealm": "tugraz-vpu",
         "keyCloakClientId": "dbp-bulletin",
@@ -82,7 +82,7 @@
     "demoCustom": {
         "basePath": "/tugapps/bulletin/",
         "entryPointURL": "https://api-demo.tugraz.at",
-        "jobOfferFormId": "7432af11-6f1c-45ee-8aa3-e90b3395e29c",
+        "jobOfferFrontendKey": "job-offer",
         "keyCloakBaseURL": "https://auth-demo.tugraz.at/auth",
         "keyCloakRealm": "tugraz-vpu",
         "keyCloakClientId": "dbp-bulletin",
@@ -96,7 +96,7 @@
     "staging": {
         "basePath": "/",
         "entryPointURL": "https://api-test.tugraz.at",
-        "jobOfferFormId": "7432af11-6f1c-45ee-8aa3-e90b3395e29c",
+        "jobOfferFrontendKey": "job-offer",
         "keyCloakBaseURL": "https://auth-test.tugraz.at/auth",
         "keyCloakRealm": "tugraz",
         "keyCloakClientId": "formulare-test_tugraz_at",
@@ -110,7 +110,7 @@
     "production": {
         "basePath": "/",
         "entryPointURL": "https://api.tugraz.at",
-        "jobOfferFormId": "7432af11-6f1c-45ee-8aa3-e90b3395e29c",
+        "jobOfferFrontendKey": "job-offer",
         "keyCloakBaseURL": "https://auth.tugraz.at/auth",
         "keyCloakRealm": "tugraz",
         "keyCloakClientId": "formulare_tugraz_at",
@@ -124,7 +124,7 @@
     "bs": {
         "basePath": "/dist/",
         "entryPointURL": "https://api-dev.tugraz.at",
-        "jobOfferFormId": "7432af11-6f1c-45ee-8aa3-e90b3395e29c",
+        "jobOfferFrontendKey": "job-offer",
         "keyCloakBaseURL": "https://auth-dev.tugraz.at/auth",
         "keyCloakRealm": "tugraz-vpu",
         "keyCloakClientId": "auth-dev-mw-frontend-local",
