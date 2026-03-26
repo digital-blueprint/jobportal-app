@@ -3,6 +3,7 @@ import {css, html} from 'lit';
 import {DbpStringElement, DbpDateElement, DbpEnumElement} from '@dbp-toolkit/form-elements';
 import {SUBMISSION_STATES_BINARY} from '../../vendor/formalize/src/utils.js';
 import {Button, Icon, sendNotification} from '@dbp-toolkit/common';
+import {apiCreateForm} from '../../vendor/formalize/src/manage-forms-api.js';
 
 export default class extends BaseObject {
     getUrlSlug() {
@@ -23,6 +24,34 @@ export default class extends BaseObject {
 
     getFormFrontendKey() {
         return 'job-offer';
+    }
+
+    /**
+     * Creates a new job-offer form via POST /formalize/forms.
+     *
+     * @param {object} host - A component instance with auth.token, entryPointUrl, and _i18n.
+     * @param {object} options
+     * @param {string} options.name - Default form name.
+     * @param {string} options.nameEn - English localized name.
+     * @param {string} options.nameDe - German localized name.
+     * @param {string} [options.description] - Optional form description.
+     * @returns {Promise<object|null>} The created form object, or null on failure.
+     */
+    async createForm(host, {name, nameEn, nameDe, description}) {
+        const formData = {
+            name,
+            localizedNames: [
+                {languageTag: 'en', name: nameEn},
+                {languageTag: 'de', name: nameDe},
+            ],
+            frontendKey: 'job-offer',
+        };
+
+        if (description) {
+            formData.additionalData = {description};
+        }
+
+        return apiCreateForm(host, formData);
     }
 }
 
