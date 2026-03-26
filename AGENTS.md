@@ -9,3 +9,5 @@
     - Always loon at `./vendor/toolkit/packages/common/src/demo/icon-names.js` for existing icons.
 - Everything needs to be properly translated with i18next.
 - For dialogs always use dbp-modal.
+- Don't update files in `dist/` as they are generated from the source files in `src/`
+- If you need to update the `CHANGELOG.md`, make sure to follow the existing format and include the version number and a clear description of the changes made
